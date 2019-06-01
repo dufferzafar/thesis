@@ -335,6 +335,40 @@ KOMA-script documentation for details.}]{fancyhdr}
 	\ifbool{nolistspace}{\endgroup}{}
 }
 
+%=============================================================================
+% CERTIFICATE SHEET
+% - start a new page. page 
+% - center the text vertically
+%=============================================================================
+\newcommand\@thesiscertificatemedskip{0.2in}
+\newcommand\@thesiscertificatebigskip{0.5in}
+\newcommand{\makecertificate}{
+%   \cleardoublepage
+  \checktoopen
+	\thispagestyle{plain}
+	\begin{center}{\huge\textit{CERTIFICATE}\par}\end{center}
+    % \begin{center} \tttypeout{Certificate} \end{center}
+	\bigskip
+	\bigskip
+	
+	It is certified that the work contained in the thesis titled
+	This is to certify that the thesis titled \textbf{\@title}, 
+	being submitted by \textbf{\@author}, 
+	is a record of bona fide work carried out by him under my guidance and supervision.
+	The work presented in this thesis has not been submitted elsewhere either in part or full, for the award of any other degree or diploma.\\[\@thesiscertificatebigskip]
+    \begin{flushright}
+    \rule{6cm}{1sp} \\
+    \facname \\
+    \deptname \\
+	\univname
+	
+    \end{flushright}
+
+    \begin{flushleft}
+    \@date
+    \end{flushleft}
+}
+
 %----------------------------------------------------------------------------------------
 %	ABSTRACT PAGE DESIGN
 %----------------------------------------------------------------------------------------
