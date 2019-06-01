@@ -27,7 +27,30 @@ headsepline, % Uncomment to get a line under the header
 \usepackage[backend=bibtex,citestyle=numeric,natbib=true]{biblatex}
 \addbibresource{References.bib}
 
-\usepackage[autostyle=true]{csquotes} % Required to generate language-dependent quotes in the bibliography
+\usepackage[autostyle=true]{csquotes}
+
+\usepackage{lipsum}
+\usepackage{xargs}
+
+% Leave todo comments in the PDF!
+\usepackage[colorinlistoftodos,prependcaption,textsize=tiny]{todonotes}
+\newcommandx{\bug}[2][1=]{\todo[linecolor=red,backgroundcolor=red!25,bordercolor=red,#1]{#2}}
+\newcommandx{\info}[2][1=]{\todo[linecolor=green,backgroundcolor=green!25,bordercolor=green,#1]{#2}}
+\newcommandx{\fixme}[2][1=]{\todo[linecolor=blue,backgroundcolor=blue!25,bordercolor=blue,#1]{#2}}
+
+% https://www.overleaf.com/learn/latex/Code_Highlighting_with_minted
+\usepackage{minted}
+% \setminted{fontsize=\footnotesize,baselinestretch=1}
+\setminted{fontsize=\footnotesize,baselinestretch=1,linenos,frame=single,framesep=10pt}
+
+% https://tex.stackexchange.com/questions/112559/box-around-minted-environment
+% \usepackage{tcolorbox}
+% \usepackage{etoolbox}
+% \BeforeBeginEnvironment{minted}{\begin{tcolorbox}}%
+% \AfterEndEnvironment{minted}{\end{tcolorbox}}%
+
+% Figures directory is located in the root
+\graphicspath{ {./figures/} }
 
 %----------------------------------------------------------------------------------------
 %	MARGIN SETTINGS
@@ -48,25 +71,17 @@ headsepline, % Uncomment to get a line under the header
 %----------------------------------------------------------------------------------------
 
 \thesistitle{Fast Stabilization of PoW Blockchains}
-\supervisor{Prof. Vinay Riebero} 
-\examiner{}
-\degree{Masters of Technology}
+\supervisor{Prof. Vinay Riebero}
+\degree{Master of Technology}
 \author{Shadab Zafar}
 \addresses{}
 
 \subject{Blockchain}
 \keywords{}
-\university{\href{http://www.iitd.ac.in}{IIT Delhi}}
-\department{\href{http://www.cse.iitd.ac.in}{Department of Computer Science and Engineering}}
-% \group{\href{}{}}
-\faculty{\href{http://faculty.university.com}{Prof. Vinay Riebero}}
 
-\AtBeginDocument{
-\hypersetup{pdftitle=\ttitle}
-\hypersetup{pdfauthor=\authorname}
-\hypersetup{pdfkeywords=\keywordnames}
-}
-
+\university{IIT Delhi}
+\department{Department of Computer Science and Engineering}
+\faculty{Prof. Vinay Riebero}
 \begin{document}
 
 \frontmatter
@@ -79,7 +94,7 @@ headsepline, % Uncomment to get a line under the header
 
 \begin{titlepage}
 \begin{center}
-\includegraphics[width=30mm,height=30mm]{figures/iitd-logo-large} 
+\includegraphics[width=30mm,height=30mm]{iitd-logo-large}
 \\
 \vspace*{.06\textheight}
 {\scshape\LARGE \univname\par}\vspace{1.5cm}
@@ -88,7 +103,7 @@ headsepline, % Uncomment to get a line under the header
 \HRule \\[0.4cm]
 {\huge \bfseries \ttitle\par}\vspace{0.4cm}
 \HRule \\[1.5cm]
- 
+
 \begin{minipage}[t]{0.4\textwidth}
 \begin{flushleft} \large
 \emph{Author:}\\
@@ -101,18 +116,17 @@ headsepline, % Uncomment to get a line under the header
 \supname
 \end{flushright}
 \end{minipage}\\[3cm]
- 
-\vfill
-
-\large \textit{A thesis submitted in fulfillment of the requirements\\ for the degree of \degreename}\\[0.3cm]
-\textit{in the}\\[0.4cm]
-% \groupname
-\deptname\\[2cm]
 
 \vfill
 
-{\large \today}\\[4cm] % Date
-\vfill
+\large \textit{
+	A thesis submitted in partial fulfillment of the requirements\\
+	for the degree of \degreename
+}\\[0.3cm]
+	\textit{in the}\\[0.4cm]
+	\deptname\\[1cm]
+
+	{\large \today}
 
 \end{center}
 \end{titlepage}
@@ -167,7 +181,8 @@ The acknowledgments and the people to thank go here, don't forget to include you
 
 \tableofcontents
 
-% \listoffigures
+\listoffigures
+\listoflistings
 
 % \listoftables
 
@@ -177,22 +192,25 @@ The acknowledgments and the people to thank go here, don't forget to include you
 
 \mainmatter
 
-\pagestyle{thesis} % Return the page headers back to the "thesis" style
+\pagestyle{thesis}
 
-% Include the chapters of the thesis as separate files from the Chapters folder
-% Uncomment the lines as you write the chapters
+% https://tex.stackexchange.com/questions/59726/change-size-of-section-subsection-subsubsection-paragraph-and-subparagraph-ti
 
-\include{chapters/ch-1-intro}
+\include{chapters/1.1-Blockchains}
+\include{chapters/1.2-Bitcoin}
+\include{chapters/2-Anchors}
+\include{chapters/3.1-Anchors-In-Bitcoin}
+\include{chapters/3.2-Testbed}
+\include{chapters/4-Experiments}
+\include{chapters/9-Conclusion}
 
 %----------------------------------------------------------------------------------------
 %	THESIS CONTENT - APPENDICES
 %----------------------------------------------------------------------------------------
 
-% \appendix % Cue to tell LaTeX that the following "chapters" are Appendices
+% \appendix
 
 %\include{Appendices/AppendixA}
-%\include{Appendices/AppendixB}
-%\include{Appendices/AppendixC}
 
 %----------------------------------------------------------------------------------------
 %	BIBLIOGRAPHY
@@ -203,4 +221,4 @@ The acknowledgments and the people to thank go here, don't forget to include you
 
 %----------------------------------------------------------------------------------------
 
-\end{document}  
+\end{document}
