@@ -1,0 +1,164 @@
+% 3.1 Anchors in Bitcoin
+% * Algorithms, Data structures
+
+% * RPCs:
+%     * submitanchor
+%     * generateanchor
+
+%     * Code path diagrams?
+
+\chapter{Implementation} \label{ch-impl}
+
+%----------------------------------------------------------------------------------------
+
+\section{Anchors with Bitcoin} \label{impl-anchors}
+
+We decided to implement Anchors in Bitcoin as it is the most widely used Proof-of-Work Blockchain. We used the stable version (v0.16 released on 26-02-2018) of the reference Bitcoin implementation (also called "Bitcoin Core") that was available to us before we started working on this project. For reference, the latest stable release of Bitcoin is v0.18 and was released on 18-05-2019. 
+
+As described in section \fixme{Add reference to correct section here.} \textit{Bitcoin Core} exposes a Remote Procedure Call (RPC) based API that other clients can use to control a Bitcoin daemon's behaviour. We implement Anchor support in Bitcoin by adding two new RPCs: \textbf{submitanchor} \& \textbf{generateanchor}. We now explain the working of these RPCs.
+
+%----------------------------------------------------------------------------------------
+
+\subsection{submitanchor} \label{impl-submitanchor}
+
+The \textit{submitanchor} RPC is modelled around the already existing \textit{submitblock} RPC. 
+It takes in as an argument a serialized representation of an anchor (which is generated outside of Bitcoin Core), ensures that it is valid, updates its local Blockchain, and then broadcasts the anchor to its peers where the process continues.
+
+\subsubsection{Validating an Anchor}
+
+Since we planned to test our implementation in a controlled environment; where all clients only send valid anchors, we have not implemented any validation checks for anchors. 
+We only check whether an Anchor has already been seen before, in which case, we ignore such duplicate Anchors.
+In a real-world implementation, further checks like ensuring that the Block pointed to by an anchor has already been received etc. would have to be performed before an anchor is considered valid \& broadcasted.
+
+\subsubsection{Updating the local Blockchain}
+
+When an anchor has been deemed valid, its effects need to be updated onto the local copy of the Blockchain.
+
+Bitcoin Core represents the blockchain in memory as a 'parent pointer tree' - which is an N-ary tree where each node contains a pointer to its parent node, but no pointers are stored to child nodes. 
+This structure has worked for Bitcoin's blocks as each Block either extends an existing chain or creates a fresh one (by forking it) so references to child nodes are never required.
+However, an anchor arriving on a block modifies the weights of all descendants of the block which requires us to also store children information in each block to be able to efficiently walk the "Block-tree".
+
+Figure \ref{fig-impl-parent-pointer} depicts Bitcoin's original design of the Blockchain, whereas 
+Figure \ref{fig-impl-child-pointer} shows the updated design of the chain where blocks also store a list of children.
+
+\begin{figure}[!htb]
+    \centering
+    \includegraphics[width=\textwidth]{"Parent Pointer".pdf}
+    \caption{Bitcoin's original blockchain representation}
+    
+    \medskip
+    \footnotesize
+    Single pointed arrows depict that a block only stores a pointer to its parent.
+    % As explained in Section 
+    \label{fig-impl-parent-pointer}
+\end{figure}
+
+\begin{figure}[!htb]
+    \centering
+    \includegraphics[width=\textwidth]{"Child Pointer".pdf}
+    \caption{Modified blockchain representation}
+    
+    \medskip
+    \footnotesize
+    Double pointed arrows depict that a block stores pointers to its children as well.
+    % As explained in Section 
+    \label{fig-impl-child-pointer}
+\end{figure}
+
+Listing \ref{impl-cblockindex} shows the change made to the core data structure that stores the blocks in memory. Specifically, a new list of child pointers is added and is maintained along with the parent pointers.
+
+\textbf{Note:} Do note that these changes have been made to the in-memory representation of a Block; they're only stored locally, and are not propagated across the network. Each Bitcoin node maintains this information locally.
+
+\begin{listing}[!htb]
+    \begin{minted}[]{cpp}
+        class CBlockIndex // {
+            public:
+
+            // pointer to the hash of this block
+            const uint256* phashBlock;
+
+            // pointer to the index of the parent of this block
+            CBlockIndex* pprev;
+
+            // pointers to the children of this block
+            std::vector<CBlockIndex*> children;
+
+            // height of this block in chain
+            // (the genesis block has height 0)
+            int nHeight;
+
+            // total amount of work (expected number of hashes) 
+            // in the chain up to and including this block
+            arith_uint256 nChainWork;
+
+            ...
+            
+        }
+    \end{minted}
+
+    \caption[Updated CBlockIndex which also stores a list of child pointers.]
+    {
+        Updated CBlockIndex which also stores a list of child pointers.
+        % \medskip
+        \footnotesize
+        Line 11 has been added. \\
+        Snippet of code taken from Bitcoin Core source file \textit{src/chain.h}.
+    }
+    \label{impl-cblockindex}
+\end{listing}
+
+
+% In the current implementation, Anchors are not stored to disk
+% because all our tests were performed on a fresh Blockchain 
+
+We have not implemented storage / retrieval of anchors to disk because our tests created a fresh chain every time they ran. 
+In a real-world implementation this would also have to be added so that changes can persist after events like client shutdown, machine restart etc.
+
+\newpage
+\paragraph{Updating weight of the chain:} 
+
+An anchor updates the weight of the block that it points to and of all its descendants.
+This is done by performing a Breadth-first-search originating from the parent block and continuing down the tree.
+
+Figure \ref{fig-impl-anchor-weight-update} depicts the scenario of an anchor arriving on a Block and the blocks whose weights would have to be updated.
+
+% Hack to hide overfull hbox warning
+\setlength{\emergencystretch}{10pt}
+
+\begin{figure}[!htb]
+    \centering
+    \includegraphics[width=\textwidth]{"Anchor Weight Update".pdf}
+    \caption[Weight update due to an Anchor]
+    {Anchor arriving on a Block updates its weights and of all its descendants (shown highlighted.)}
+    
+    \medskip
+    \footnotesize
+    The double pointed arrows depict that a block also stores pointers to its children. 
+    % As explained in Section 
+    \label{fig-impl-anchor-weight-update}
+\end{figure}
+
+%----------------------------------------------------------------------------------------
+
+\subsubsection{Brodcasting an Anchor to the network}
+
+The RPC call to submit an anchor happens on the TCP interface of Bitcoin Core which uses JSON as its data representation format. As explained in Section \fixme{ref} the Bitcoin Protocol uses a separate interface to exchange messages between the network. 
+We add a new message type that uses the same Bitcoin Protocol to send Anchor messages. 
+See the source file \textit{src/protocol.cpp} \& \textit{src/protocol.h} for the relevant code.
+
+Anchors are propagated in the network by flooding, wherein each node broadcasts Anchor message to all its immediate neighbors (which process the anchor and further brodcasts it.)
+
+% TODO: Add information about separate threads and passing data among them.
+
+\paragraph{Dealing with multiple threads:} 
+The two interfaces that Bitcoin Core provides (JSON-RPC \& BitP) operate on separate network sockets and are handled by separate threads of the process. 
+Data is passed among these threads via a signal \& slot architecture, where each thread has handlers that listen on pre-defined slots, waiting for an event (a signal) to occur. When the signal fires, the slot handling function is executed.
+We follow the same design and create a new signal \& the corresponding slot for Anchors called \textbf{AnchorConnected} which performs the actual broadcast of Anchor messages.
+See the source file \textit{src/net\_processing.cpp} \& \textit{src/validationinterface.cpp} for the relevant code.
+
+%----------------------------------------------------------------------------------------
+
+\subsection{generateanchor} \label{impl-generateanchor}
+
+The \textit{generateanchor} RPC is modelled around the already existing \textit{generate} RPC (which is used to generate a block). 
+While the \textit{submitanchor} RPC receives an anchor's representation as an argument, the \textit{generateanchor} RPC takes no arguments. When it is called, a new anchor is generated by the Bitcoin daemon itself, and is processed in the same way as explained in section \ref{impl-submitanchor}.

@@ -1,0 +1,61 @@
+%----------------------------------------------------------------------------------------
+
+\section{Bitcoin} \label{intro-bitcoin}
+
+Bitcoin is a digital currency (also called crypto-currency) that was first proposed by the pseudonymous "Satoshi Nakamoto" \cite{bitcoinOriginal}.
+
+%----------------------------------------------------------------------------------------
+
+\newpage
+\subsection{Proof-of-Work} \label{btc-pow}
+
+Proof of Work is one of the mechanisms used by a Blockchain system to achieve consensus on the set of records (transactions in case of a Digital Ledger) that are considered valid. 
+
+% It's use as a consensus mechanism was first made by the pseudonymous "Satoshi Nakamoto" in the Bitcoin crypto-currency \cite{bitcoinOriginal}.
+
+\begin{itemize}
+    \item 1 cpu 1 vote
+    \item Nakamoto consensus?
+\end{itemize}
+
+%----------------------------------------------------------------------------------------
+
+\newpage
+\subsection{Architecture / Design} \label{btc-arch}
+
+\begin{itemize}
+    \item Go through the Bitcoin Adventures doc
+    \item Modes of operation - regtest etc?
+    \item Diagram from the PPT?
+    \item Protocols used - RPC / BitP - separate subsubsections? 
+    \item this interface can be password protected so only authorised clients can make the calls
+\end{itemize}
+
+\begin{figure}[!htb]
+    \centering
+    \includegraphics[width=\textwidth]{"Bitcoin Protocols".pdf}
+    \caption{Overview of the Two Protocol interfaces used by Bitcoin Core}
+    \label{fig-btc-arch}
+\end{figure}
+
+%----------------------------------------------------------------------------------------
+
+\newpage
+\subsection{Building Bitcoin} \label{btc-build}
+
+\begin{itemize}
+    \item Written in C++; cross-platform
+    \item Instructions to develop on Arch / Ubuntu 16 machines
+    \item Exact flags we used and why?
+\end{itemize}
+
+%----------------------------------------------------------------------------------------
+
+\newpage
+\subsection{Forks \& Their Problems} \label{btc-forks}
+
+\begin{itemize}
+    \item Heaviest chain rule
+    \item What problems do they cause? (list from the paper)
+    \item Appropriate references?
+\end{itemize}
