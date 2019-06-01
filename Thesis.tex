@@ -21,10 +21,11 @@ headsepline, % Uncomment to get a line under the header
 
 \usepackage{palatino}
 \usepackage{url}
-\usepackage{natbib}
-%\usepackage[backend=bibtex,citestyle=numeric,natbib=true]{biblatex} % Use the bibtex backend with the authoryear citation style (which resembles APA)
 
-%\addbibresource{references.bib} % The filename of the bibliography
+% \usepackage{natbib}
+% \bibliographystyle{unsrtnat}
+\usepackage[backend=bibtex,citestyle=numeric,natbib=true]{biblatex}
+\addbibresource{References.bib}
 
 \usepackage[autostyle=true]{csquotes} % Required to generate language-dependent quotes in the bibliography
 
@@ -197,9 +198,8 @@ The acknowledgments and the people to thank go here, don't forget to include you
 %	BIBLIOGRAPHY
 %----------------------------------------------------------------------------------------
 
-%\bibliographystyle{te}
-%\bibliography{references}
-% \printbibliography[heading=bibintoc]
+% \bibliography{References}
+\printbibliography[heading=bibintoc]
 
 %----------------------------------------------------------------------------------------
 
