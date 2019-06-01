@@ -223,7 +223,8 @@
 \NewDocumentCommand     { \subject    } { m } { \DeclareDocumentCommand { \subjectname   } { } {#1}  }
 \NewDocumentCommand     { \keywords   } { m } { \DeclareDocumentCommand { \keywordnames  } { } {#1}  }
 
-\newcommand{\checktoopen}{% New command to move content to the next page which prints to the next odd page if twosided mode is active  
+% New command to move content to the next page which prints to the next odd page if twosided mode is active  
+\newcommand{\checktoopen}{
 	\if@openright\cleardoublepage\else\clearpage\fi
 	\ifdef{\phantomsection}{\phantomsection}{}% The \phantomsection command is necessary for hyperref to jump to the correct page
 }
@@ -246,8 +247,9 @@
 %----------------------------------------------------------------------------------------
 
 \usepackage{xcolor} % Required for specifying custom colours
-
+\colorlet{mdtBlue}{blue!50!black}
 \colorlet{mdtRed}{red!50!black}
+
 
 %----------------------------------------------------------------------------------------
 %	MARGINS
@@ -312,7 +314,8 @@ KOMA-script documentation for details.}]{fancyhdr}
 	\hbox{}
 	\thispagestyle{\blank@p@gestyle}
 	\newpage
-	\if@twocolumn\hbox{}\newpage\fi\fi\fi%
+	\if@twocolumn\hbox{}\newpage\fi
+	\fi\fi
 }
 
 %----------------------------------------------------------------------------------------
@@ -408,7 +411,7 @@ KOMA-script documentation for details.}]{fancyhdr}
 %----------------------------------------------------------------------------------------
 
 \usepackage{xcolor}
-\colorlet{mdtRed}{red!50!black}
+\colorlet{mdtBlue}{blue!50!black}
 \newcommand{\acknowledgementname}{Acknowledgements}
 \providecaptionname{american,australian,british,canadian,english,newzealand,UKenglish,USenglish} {\acknowledgementname}{Acknowledgements} % Acknowledgement text for English countries
 \providecaptionname{german,ngerman,austrian,naustrian}{\acknowledgementname}{Danksagung} % Acknowledgement text for Germanic countries
@@ -523,8 +526,8 @@ bookmarksopenlevel=0,
 hypertexnames=false,
 colorlinks=true, % Set to false to disable coloring links
 citecolor=magenta, % The color of citations
-linkcolor=red, % The color of references to document elements (sections, figures, etc)
-urlcolor=mdtRed, % The color of hyperlinks (URLs)
+linkcolor=blue, % The color of references to document elements (sections, figures, etc)
+urlcolor=mdtBlue, % The color of hyperlinks (URLs)
 pdfstartview={FitV},
 unicode,
 breaklinks=true,
