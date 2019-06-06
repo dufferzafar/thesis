@@ -68,7 +68,7 @@ The core part of the testbed is a centralized program (called "Master") that con
     \item Once the nodes become aware of each other, the Master program generates empty blocks at each node so they have bitcoins to spend.
     
     \item These bitcoins are later used to generate transactions that are used to fill up the Blocks that are generated.
-          Secction \fixme{ref} goes over this process in more detail.
+          Secction \ref{impl-transactions} goes over this process in more detail.
 \end{enumerate}
 
 \subsubsection{Block \& Anchor Generation}
@@ -91,21 +91,23 @@ Once the experiment finishes, the Master program fetches logs from all the nodes
 
 After the logs have been processed, the Master program stops all the running Bitcoin processes, deletes the data-directories and removes all manually introduced delays from the nodes so that the next experiment can start from a clean slate.
 
+\info{Add snippets of code of threads that generate Blocks, Anchors, Transactions?}
+
 %----------------------------------------------------------------------------------------
 
 \newpage
 \subsection{Architecture} \label{impl-testbed-arch}
 
-We went over different architectures for the testbed, starting with the most straightforward one, where the Master program handled bulk of the load during the experiments
+We went over different architectures for our testbed, starting with the most straightforward - where the Master program handled the bulk of the load during the experiments, and later moving on to a setup where the load was distributed amongst multiple processes running on different machines. We now go over details of various iterations of our architecture, explain what problems we faced and what we did to resolve them.
 
 \subsubsection{Iteration 1} \label{impl-arch-1}
 
-We started with a simple
+We began with a setup where the Master was run on one virtual machine (VM) and it connected to Bitcoin processes running on other VMs via a TCP-RPC connection.
 
 \begin{figure}[!htb]
     \centering
     \includegraphics[width=\textwidth]{"Arch v1".pdf}
-    \caption{First iteration of Master's architecture}
+    \caption{First iteration of testbed architecture}
     
     \medskip
     \footnotesize
@@ -113,15 +115,23 @@ We started with a simple
     \label{fig-impl-arch-1}
 \end{figure}
 
+Figure \ref{fig-impl-arch-1} depicts the architecture: On the left is the Master program (running on a single VM) and on the right is the rest of the Bitcoin network running on a cluster of VMs, each of which runs multiple Bitcoin nodes which have been connected to each other according to a predefined topology.
+
+The Master program consists of three separate threads of execution that deal with generation of Blocks, Anchors \& Transactions. 
+These threads work by randomly picking a Bitcoin node from the network and sending an appropriate RPC command to it, and then waiting for some time before sending the next command.
+
+The main problem we faced with this architecture was trying to generate a high throughput of transactions (which was required to have fully filled Blocks.) We observed that as we tried to increase the throughput, a majority of the RPC calls would fail due to socket timeouts, leading us to believe that the Master was creating a bottleneck in the system.
+
 %----------------------------------------------------------------------------------------
 
-\newpage
-\subsubsection{Iteration 2} \label{impl-arch-1}
+\subsubsection{Iteration 2} \label{impl-arch-2}
+
+We decided to extract out the transaction generation thread from the Master program, convert it into a separate script and move it to each of the individual VMs. 
 
 \begin{figure}[!htb]
     \centering
     \includegraphics[width=\textwidth]{"Arch v2".pdf}
-    \caption{Second iteration of Master's architecture}
+    \caption{Second iteration of testbed architecture}
     
     \medskip
     \footnotesize
@@ -129,15 +139,20 @@ We started with a simple
     \label{fig-impl-arch-2}
 \end{figure}
 
+Figure \ref{fig-impl-arch-2} shows the updated architecture, where a "Generate Transactions" script is run on each VM. The script only connects to Bitcoin processes running on its own machine so that all socket connections act as local (or loopback) connections. This reduces the network overhead of sending RPC calls from the Master program. 
+
+This architecture fixed the problem with transaction throughput, and we continued to use it until we needed to scale our setup to a large number of nodes (100+) with the experiments having shorter inter-arrival times between the various events (Blocks, Anchors, Transactions). When we tried to generate an anchor every second, we observed that some of the RPC calls would fail due to socket errors.
+
 %----------------------------------------------------------------------------------------
 
-\newpage
 \subsubsection{Iteration 3} \label{impl-arch-3}
+
+Similar to what we did before, for our final iteration of the architecture, we moved the Block and Anchor generation threads from Master to the individual VMs.
 
 \begin{figure}[!htb]
     \centering
     \includegraphics[width=\textwidth]{"Arch v3".pdf}
-    \caption{Third iteration of Master's architecture}
+    \caption{Third iteration of testbed architecture}
     
     \medskip
     \footnotesize
@@ -145,19 +160,158 @@ We started with a simple
     \label{fig-impl-arch-3}
 \end{figure}
 
+Figure \ref{fig-impl-arch-3} shows this architecture. Apart from a transaction generating script, a block and anchor genenrating script has also been added to each VM \fixme{continue}.
+
+The master program is now only responsible to setup the network, and launch its various components. After which, it sits idle waiting for the experiment to end. We've used this architecture for our final set of experiments.
 
 %----------------------------------------------------------------------------------------
 
-\newpage
-\subsection{Transaction Throughput} \label{impl-testbed-arch}
+% \newpage
+\subsection{Transaction Throughput} \label{impl-transactions}
 
-%----------------------------------------------------------------------------------------
+In the real-world, Bitcoin blocks contain transactions which are generated by millions of people throughout the world when they try to make payments for various goods and services. \info{Txn structure?} To emulate this process in our experiments, we generated dummy transactions between various Bitcoin nodes in the network, where one node randomly picks another and sends it a few bitcoins.
+
+% Could be added after 1st sentence?
+% \begin{itemize}
+%     \item Image showing the structure of a Bitcoin transaction, and its description?
+%     \item Components: Address, Amount, Input, Output.
+%     \item Snippet of code of the sendtoaddress RPC.
+% \end{itemize}
+
+To keep our testbed as close to the real-world as possible, we wanted to generate enough transactions per second to fill up all Blocks that are generated. A typical Bitcoin block is of 1 MB in size whereas the smallest transaction, which transfer bitcoins from one node to another (and hence contains one input and one output) is roughly of 300 bytes, so around 3500 transactions are needed for every Block. This is easier when the inter-arrival time between blocks is larger. In Bitcoin, a new block is generated (roughly) every ten minutes, which is enough for transactions to be generated to fill the Blocks. However, we wanted to test scenarios where the block-interval time is short (say in the order of ten seconds) so we had to try various approaches to increase the transaction throughput of the system.
+
+\subsubsection{sendtoaddress RPC}
+
+As mentioned in Section \ref{impl-arch-1} we started with an architecture where the Master program genereated all the transactions by sending \textit{sendtoaddress} RPC to one of the nodes at random time intervals. Listing \ref{code-testbed-sendtoaddress} shows the Master's transaction generating thread. 
+We sample two nodes at random, arbitrarily assign one of them to be the payer and another to be the payee.
+The \textit{sendtoaddress} RPC is sent to the payer, which generates the transaction and broadcasts it throughout the network.
+
+\begin{listing}[!htb]
+    \begin{minted}[]{python}
+
+while True:
+    
+    # Select two random nodes 
+    payer, payee = random.sample(NODES, 2)
+
+    payees_address = address_of[payee]
+    amount_to_pay = 0.01
+
+    # Send the RPC call to the node that will pay
+    payer.sendtoaddress(payees_address, amount_to_pay)
+
+    \end{minted}
+
+    \caption[Generating transactions using the \textit{sendtoaddress} RPC]
+    {
+        Generating transactions using the \textit{sendtoaddress} RPC.
+
+        \footnotesize
+        One node sends a token amount of bitcoins to another.
+    }
+    \label{code-testbed-sendtoaddress}
+\end{listing}
+
+The \textit{sendtoaddress} RPC creates the simplest form of Bitcoin transaction, having exactly one input and exactly one output. As mentioned above, we need 3500 of such transactions per Block, which for a Block inter-arrival time of 30 seconds comes out to around 120 transactions per second.
+
+In practice we were only able to generate around 10 transactions per second, which is only one-tenth of what was required. Even after we moved to a setup where the transaction generation process was remove from Master and distributed to the remote virtual machines, we did not observe any improvement in transaction throughput.
+
+\subsubsection{Apache JMeter}
+
+At first, we attributed this low throughput of transactions to our implementation of the Master program, in particular the transaction generating thread, which was in Python and used Python's in-built socket \& http libraries. We felt that using a compiled language might give us better results, but since porting the code to another language would take up a lot of time, we instead decided to use an already existing application that would be well suited for this task - Apache JMeter \fixme{cite Apache JMeter homepage} - which is a Java based open-source application that is used to load-test and measure performance of other applications. It supports a wide variety of web based protocols like HTTP, FTP, Generic TCP, LDAP etc.
+
+We used JMeter in a distributed setup \fixme{cite Apache docs page?} since it was appropriate for our setup. We ran JMeter server on one of the VMs (which would act as master) and JMeter clients on other VMs (acting as slaves.) We created a JMeter test plan which uses the \textit{HTTPSamplerProxy} class to send JSON-RPC commands to the Bitcoin nodes running on the VM. JMeter allows the load on machines to be configured via multiple methods. We used a \textit{ThreadGroup} with 100 threads running on each VM with a "ramp up" time of 0 seconds, which essentially means that we expect 100 transactions to be generated per second, but in practice we observed similar results as before - only 10 transactions per second were actually being generated, which meant that the low throughput issue is not with our implementation of Master but instead lies within Bitcoin itself.
+
+JMeter logs the time each RPC call took to finish execution and return its result. Analyzing those logs gave us insight into the real problem. We observed that the inital RPC calls executed faster taking only 0.5 seconds to generate a transaction, while as time went on the response time increased, with some of the calls taking as much as 100 seconds to generate a transaction. 
+
+To understand the root cause of the problem, we read the source code involved in generating a single transaction. We found that the \textit{sendtoaddress} RPC is fundamentally limited in the way it chooses the bitcoins to spend to generate a transaction and as the mempool becomes larger new transactions are generated slowly. This has not been a problem for the main Bitcoin network because the transaction throughput of the system is low by design.
+
+\info{Mention the ancestor limit; explain?}
+
+While going through the source code of Bitcoin's RPC server implementation (located in \textit{src/httpserver.cpp}) we also discovered some parameters (passed onto the process when it is launched) that control behaviour of the RPC server:
 
 \begin{itemize}
-
-    \item Master used to send to all
-    \item sendtoaddress
-    \item jmeter
-    \item sendmany
-
+    \item \textbf{rpcthreads} - the number of threads to service RPC calls. By default 4 threads are run, but increased them to 8.
+    
+    \item \textbf{rpcworkqueue} - the depth of the work queue used to service RPC calls. The default value is 16, but we increased it to 64 because we found that further increasing it didn't improve performance.
+    
+    \item \textbf{rpcservertimeout} - timeout during HTTP requests. We left this to its default value of 30 seconds since we want each request to succeed during that time.
 \end{itemize}
+
+%----------------------------------------------------------------------------------------
+
+\subsubsection{sendmany RPC}
+
+\textit{sendtoaddress} is not the only way of generating a transaction in Bitcoin. Some other ways are:
+
+\fixme{add ref for these?}
+
+\paragraph{raw transaction API: } 
+
+The "raw transaction API" was introduced in Bitcoin version 0.7. It gives users low-level access to transaction creation and broadcast. The API has a set of RPCs that can be used to create a transaction: \textit{createrawtransaction}, \textit{fundrawtransaction}, \textit{signrawtransaction}, \textit{sendrawtransaction}. Listing \ref{code-testbed-rawtxn} shows the right order of executing these calls.
+
+\begin{listing}[!htb]
+    \begin{minted}[]{python}
+
+while True:
+
+    # Select two random nodes 
+    payer, payee = random.sample(NODES, 2)
+
+    payees_address = address_of[payee]
+    amount_to_pay = 0.01
+
+    # Send all RPC calls to the node that will pay
+    r = payer.createrawtransaction([], { payee_address: amount_to_pay })
+    f = payer.fundrawtransaction(r)
+    s = payer.signrawtransaction(f["hex"])
+    t = payer.sendrawtransaction(t["hex"])
+
+    \end{minted}
+
+    \caption[Generating transactions using the "raw transaction" API]
+    {
+        Generating transactions using the "raw transaction" API.
+
+        \footnotesize
+        Four RPC calls are required to create one transaction.
+    }
+    \label{code-testbed-rawtxn}
+\end{listing}
+
+\paragraph{sendmany: } 
+
+While the \textit{sendtoaddress} RPC can only send bitcoins to a single address, the \textit{sendmany} RPC is used to send bitcoins to multiple addresses in a single transaction. A transaction paid to a single address is of 300 Bytes, but one having multiple addresses can be made arbitrarily large by increasing the number of output addresses. Listing \ref{code-testbed-sendmany} shows our usage of the \textit{sendmany} call. We select a random set of nodes that are paid a token amount of bitcoins. 
+
+\begin{listing}[!htb]
+    \begin{minted}[]{python}
+
+while True:
+
+    # Select a random node as payer
+    payer = random.choice(NODES)
+
+    # Select a random set of payees having a size in the range [5, 50)
+    payees = random.sample(NODES, random.randint(5, 50))
+
+    amount_to_pay = 0.01
+
+    # Send the RPC call to the node that will pay
+    payer.sendmany("", { address_of[p]: amount_to_pay for p in payees })
+
+    \end{minted}
+
+    \caption[Generating transactions using the \textit{sendmany} RPC]
+    {
+        Generating transactions using the \textit{sendmany} RPC.
+
+        \footnotesize
+        Can be used to create transactions of arbitrary size, since they have multiple output addresses.
+    }
+    \label{code-testbed-sendmany}
+\end{listing}
+
+We finally used the \textit{sendmany} RPC instead of the \textit{raw-transaction} API as it only involves sending one RPC call instead of four to generate a transaction. A typical transaction generated by our implementation was of around 5 KBs which means we only require 200 transactions per Block or 7 transactions per second (assuming Block inter-arrival time of 30 seconds) which is well within reach of Bitcoin's RPC server.
+
+
+%----------------------------------------------------------------------------------------
