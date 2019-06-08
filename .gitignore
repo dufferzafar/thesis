@@ -271,3 +271,11 @@ TSWLatexianTemp*
 *.glstex
 
 # End of https://www.gitignore.io/api/latex
+
+/figures/old/
+
+/Thesis.pdf
+
+/Thesis-bw.pdf
+
+/chapters/snippets.tex
