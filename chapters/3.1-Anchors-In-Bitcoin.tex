@@ -1,21 +1,113 @@
-% 3.1 Anchors in Bitcoin
-% * Algorithms, Data structures
-
-% * RPCs:
-%     * submitanchor
-%     * generateanchor
-
-%     * Code path diagrams?
 
 \chapter{Implementation} \label{ch-impl}
 
+\section{Building Bitcoin Core} \label{impl-btc-compile}
+
+As mentioned before, the reference implementation of Bitcoin (known as Bitcoin Core) is written in cross-platform C++ and is available on all major operating systems like Windows, macOS and various flavours of Linux \cite{bitcoinDownload}. Since we had to make changes to the Core code we used the freely available source code of version 0.16 \cite{bitcoinSource}. The code uses GNU Build System \cite{gnuBuild} to automate the build process. We now describe the process of compiling Bitcoin Core. 
+
+\subsection*{Installing Dependencies}
+
+The first step is to install all required dependencies, which varies from platform to platform. Listings \ref{code-btc-deps-ubuntu}, \ref{code-btc-deps-arch} show how to install them on Ubuntu 16.04 and Manjaro 18.0 respectively.
+
+\begin{listing}[!htb]
+    \begin{minted}[]{bash}
+#!/bin/bash
+
+$ sudo add-apt-repository ppa:bitcoin/bitcoin
+$ sudo apt-get update
+
+$ sudo apt-get install build-essential libtool autotools-dev \
+    automake pkg-config libssl-dev libevent-dev bsdmainutils \
+    python3 libboost-system-dev libboost-filesystem-dev \
+    libboost-chrono-dev libboost-program-options-dev \
+    libboost-test-dev libboost-thread-dev libdb4.8-dev \
+    libdb4.8++-dev protobuf-compiler libprotobuf-dev
+
+$ sudo apt-get install libqt5gui5 libqt5core5a libqt5dbus5 \
+    qttools5-dev qttools5-dev-tools libprotobuf-dev \
+    protobuf-compiler libqrencode-dev
+
+    \end{minted}
+
+    \caption[Installing dependencies required for Bitcoin Core on Ubuntu 16.04]
+    {
+    Installing dependencies required for Bitcoin Core on Ubuntu 16.04 \\
+    \footnotesize
+    Commands taken from the original documentation \cite{bitcoinBuildUnix}.
+    }
+    \label{code-btc-deps-ubuntu}
+\end{listing}
+
+
+\begin{listing}[!htb]
+    \begin{minted}[]{bash}
+#!/bin/bash
+
+$ sudo pacman -S boost libevent qt5-base qt5-tools qrencode \
+    miniupnpc protobuf zeromq db4.8
+
+\end{minted}
+
+\caption[Installing dependencies required for Bitcoin Core on Manjaro 18.0]
+{
+    Installing dependencies required for Bitcoin Core on Manjaro 18.0 \\
+    \footnotesize
+    Commands adapted from Bitcoin PKGBUILD file for ArchLinux \cite{bitcoinBuildArch}.
+    }
+    \label{code-btc-deps-arch}
+\end{listing}
+
+\subsection*{Compiling the source}
+
+Once all required dependencies have been installed, we download the source code from the official repository on GitHub and proceed to compile it. Listing \ref{code-btc-compile} lists the steps. 
+
+\begin{listing}[!htb]
+    \begin{minted}[]{bash}
+#!/bin/bash
+
+# Get the source from official repository on GitHub
+$ git clone https://github.com/bitcoin/bitcoin
+$ cd bitcoin
+
+# We used v0.16 of the source
+$ git checkout v0.16
+
+# Disable parts of the code that we don't require to speed up compilation
+$ ./autogen.sh
+$ ./configure --disable-tests --disable-bench \
+    --without-gui --with-incompatible-bdb
+
+# Compile using 4 CPU cores
+$ make -j4
+
+    \end{minted}
+
+    \caption[Compiling Bitcoin Core]
+    {
+    Compiling Bitcoin Core \\
+    \footnotesize
+    Commands taken from the original documentation \cite{bitcoinBuildUnix}.
+    }
+    \label{code-btc-compile}
+\end{listing}
+
+To speed up the compilation process we pass the following flags to \textit{GNU Configure}:
+
+\begin{itemize}
+    \item \textbf{--disable-tests} - Skip compiling tests written Bitcoin Core.
+    \item \textbf{--disable-bench} - Skip compiling benchmarks.
+    \item \textbf{--without-gui} - Skip compiling the Qt based GUI.
+    \item \textbf{--with-incompatible-bdb} - Allow using a bdb version other than 4.8
+\end{itemize}
+
 %----------------------------------------------------------------------------------------
 
+\newpage
 \section{Anchors with Bitcoin} \label{impl-anchors}
 
 We decided to implement Anchors in Bitcoin as it is the most widely used Proof-of-Work Blockchain. We used the stable version (v0.16 released on 26-02-2018) of the reference Bitcoin implementation (also called "Bitcoin Core") that was available to us before we started working on this project. For reference, the latest stable release of Bitcoin is v0.18 and was released on 18-05-2019. 
 
-As described in section \fixme{Add reference to correct section here.} \textit{Bitcoin Core} exposes a Remote Procedure Call (RPC) based API that other clients can use to control a Bitcoin daemon's behaviour. We implement Anchor support in Bitcoin by adding two new RPCs: \textbf{submitanchor} \& \textbf{generateanchor}. We now explain the working of these RPCs.
+As described in section \fixme{Add reference to correct section here.} \textit{Bitcoin Core} exposes a Remote Procedure Call (RPC) based API that other clients can use to control a Bitcoin node's behaviour. We implement Anchor support in Bitcoin by adding two new RPCs: \textbf{submitanchor} \& \textbf{generateanchor}. We now explain the working of these RPCs.
 
 %----------------------------------------------------------------------------------------
 
@@ -117,6 +209,8 @@ In a real-world implementation this would also have to be added so that changes 
 \newpage
 \paragraph{Updating weight of the chain:} 
 
+\info{Each node computes the weight with information it has locally; nChainWork}
+
 An anchor updates the weight of the block that it points to and of all its descendants.
 This is done by performing a Breadth-first-search originating from the parent block and continuing down the tree.
 
@@ -137,6 +231,11 @@ Figure \ref{fig-impl-anchor-weight-update} depicts the scenario of an anchor arr
     % As explained in Section 
     \label{fig-impl-anchor-weight-update}
 \end{figure}
+
+\paragraph{Anchors-per-Block:}
+We added a new parameter called \textit{anchorsperblock} that controls the amount of weight that an anchor adds to the chain. The parameter is set once when the Bitcoin process starts. 
+As an example, An \textit{anchorsperblock} value of 10 specifies that 
+anchor generation is ten times easier than block generation, so ten anchors are generated for every block and in such a case, an anchor adds 1/10th of the weight that a Block adds to the chain.
 
 %----------------------------------------------------------------------------------------
 
@@ -161,4 +260,6 @@ See the source file \textit{src/net\_processing.cpp} \& \textit{src/validationin
 \subsection{generateanchor} \label{impl-generateanchor}
 
 The \textit{generateanchor} RPC is modelled around the already existing \textit{generate} RPC (which is used to generate a block). 
-While the \textit{submitanchor} RPC receives an anchor's representation as an argument, the \textit{generateanchor} RPC takes no arguments. When it is called, a new anchor is generated by the Bitcoin daemon itself, and is processed in the same way as explained in section \ref{impl-submitanchor}.
+While the \textit{submitanchor} RPC receives an anchor's representation as an argument, the \textit{generateanchor} RPC takes no arguments. When it is called, a new anchor is generated by the Bitcoin node itself, and is processed in the same way as explained in section \ref{impl-submitanchor}.
+
+We added this RPC because \fixme{continue this}
