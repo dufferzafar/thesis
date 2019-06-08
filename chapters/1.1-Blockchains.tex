@@ -2,7 +2,7 @@
 
 % 1 Introduction
 
-%     1.1 Blockchain Systems (/ technology?)
+%     1.1 blockchain Systems (/ technology?)
 
 %     1.2 Bitcoin
 %         * Intro: Created, Nakamoto
@@ -17,22 +17,55 @@
 %         * How they could help (motivation)
 
 In this chapter we introduce the preliminaries; 
-Section \ref{intro-blockchain} begins with what a Blockchain is, and goes into details of what the current problems are
-Section \ref{intro-bitcoin} describes Bitcoin - the first public Blockchain system,
+Section \ref{intro-blockchain} begins with the definition of a blockchain and explains 
+% , and goes into details of what the current problems are
+Section \ref{intro-bitcoin} describes Bitcoin - the first public blockchain system,
 % Section \ref{intro-anchors} 
 
 %----------------------------------------------------------------------------------------
-%	SECTION 1 - Blockchain Systems
+%	SECTION 1 - blockchain Systems
 %----------------------------------------------------------------------------------------
 
-\section{Blockchain Systems} \label{intro-blockchain}
+\section{Blockchain Technology} \label{intro-blockchain}
 
-A blockchain is a 
+Blockchains are usually explained by describing its first public application - a cryptocurrency (Bitcoin), but this does not capture other systems that are also categorized as blockchains. Such systems include applications of blockchain technology beyond cryptocurrency like in voting platforms, supply chain management, healthcare etc.
+% Many use Bitcoin as the starting point and explain blockchains by its first public use - as a cryptocurrency,
+
+There exists no formal definition of a blockchain which is widely accepted; with multiple definitions being used in the literature, each with slightly different phrasing. 
+
+The simplest definition comes from Narayanan et. al. \cite{bitcoinBook}: 
+\textit{
+    A blockchain is defined as a linked list data structure, that uses hash sums over its elements as pointers to the respective elements.
+}
+In this view, a blockchain is just a data structure, where blocks (storing records) are linked into a chain with the use of cryptographic hash and each new block stores a reference to its parent. \info{need a pic here?} \info{add nakamoto anecdote here?}
+
+Another definition comes from a technical committee formed by the International Standards Organization (ISO) to standardize blockchain technology \cite{isotc307}:
+\textit{
+    blockchain is a shared, immutable ledger that can record transactions across different industries, [...] 
+    It is a digital platform that records and verifies transactions in a transparent and secure way, removing the need for middlemen and increasing trust through its highly transparent nature.
+} 
+% The above definition encompasses a 
+
+Some keywords from the above definition require further explanation: 
 
 \begin{itemize}
-    \item Blockchain concept / tech - 1 para.
-    \item Consensus mechanisms
-    \item Some applications? new subsection? 2 para?
+    \item \textit{shared} - a blockchain is distributed among a set of nodes which participate in its maintainance and are connected in a decentralized manner, so  there is no central party above others and all the nodes are equal in their capabilities.
+
+    \item \textit{immutable} - Essentially this means
+
+    \item \textit{transactions}  - A transaction is generally considered to be the basic unit of data stored on a blockchain.
+    % Across different industries the transactions may take different forms, but 
+
+    \item \textit{transparent} - 
+
+    \item \textit{middlemen \& trust} - 
 \end{itemize}
 
-\newpage 
+A blockchain can also be thought of as a distributed system, where the goal is to solve the Byzantine Generals Problem and arrive at a consensus on the ordering of transactions in the chain. In this view, blockchains are generally categorized into two broad types: 
+
+\begin{itemize}
+    \item \textbf{Permissionless: } The key property of this type of blockchain is that the set of nodes that take part in the consensus process (over the state of chain) is not known beforehand so anyone can join the network and participate in maintainance of the chain. These blockchains typically use a consensus algorithm such as Proof-of-Work, Proof-of-Stake etc.
+    
+    \item \textbf{Permissioned: } Contrary to above, in this type of blockchain only a previously-known set of nodes is allowed to take part in the network. Furthermore, all the nodes do not have equal capabilities so for eg. only a restricted set of nodes might have the right to create or validate transactions etc. These blockchains typically use the PBFT algorithm for consensus.
+\end{itemize}
+
