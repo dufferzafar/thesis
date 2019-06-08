@@ -1,0 +1,541 @@
+@article{prism,
+abstract = {The concept of a blockchain was invented by Satoshi Nakamoto to maintain a distributed ledger for an electronic payment system, Bitcoin. In addition to its security, important performance measures of a blockchain protocol are its transaction throughput, confirmation latency and confirmation reliability. Existing systems operate far away from these physical limits. In this work we introduce Prism, a new proof-of-work blockchain protocol, which can achieve 1) security against up to 50{\%} adversarial hashing power; 2) optimal throughput up to the capacity C of the network; 3) confirmation latency for honest transactions proportional to the propagation delay D, with confirmation error probability exponentially small in the bandwidth-delay product CD; 4) eventual total ordering of all transactions. Our approach to the design of this protocol is based on deconstructing the blockchain into its basic functionalities and systematically scaling up these functionalities to approach their physical limits.},
+annote = {defsfd},
+author = {Bagaria, Vivek and Kannan, Sreeram and Tse, David and Fanti, Giulia and Viswanath, Pramod},
+file = {:D$\backslash$:/research/scalability/scalability/prism.pdf:pdf},
+journal = {arXiv preprint arXiv:1810.08092},
+keywords = {Blockchain {\textperiodcentered} Base Protocol {\textperiodcentered} Consensus {\textperiodcentered} Optimal T},
+mendeley-tags = {Blockchain {\textperiodcentered} Base Protocol {\textperiodcentered} Consensus {\textperiodcentered} Optimal T},
+title = {{Deconstructing the blockchain to approach physical limits}},
+year = {2018}
+}
+@article{EthereumOriginal,
+abstract = {blog},
+annote = {origianl etherrum paper
+
+use for ghost},
+author = {Buterin, Vitalik and Others},
+file = {:D$\backslash$:/research/scalability/scalability/ethereum{\_}whitepaper.pdf:pdf},
+journal = {URL https://github.com/ethereum/wiki/wiki/White-Paper},
+title = {{Ethereum white paper, 2014}},
+year = {2013}
+}
+@inproceedings{GHOST,
+abstract = {Bitcoin is a disruptive new crypto-currency based on a decentralized open-source protocol which has been gradually gaining momentum. Perhaps the most important question that will affect Bitcoin's success, is whether or not it will be able to scale to support the high volume of transactions required from a global currency system. We investigate the implications of having a higher transaction throughput on Bitcoin's security against double-spend attacks. We show that at high throughput, substantially weaker attackers are able to reverse payments they have made, even well after they were considered accepted by recipients. We address this security concern through the GHOST rule, a modification to the way Bitcoin nodes construct and re-organize the block chain, Bitcoin's core distribute data-structure. GHOST has been adopted and a variant of it has been implemented as part of the Ethereum project, a second generation distributed applications platform.},
+author = {Sompolinsky, Yonatan and Zohar, Aviv},
+booktitle = {International Conference on Financial Cryptography and Data Security},
+file = {:D$\backslash$:/research/scalability/scalability/ghost.pdf:pdf},
+keywords = {ghost},
+mendeley-tags = {ghost},
+organization = {Springer},
+pages = {507--527},
+title = {{Secure high-rate transaction processing in bitcoin}},
+year = {2015}
+}
+@inproceedings{bitcoinNG,
+abstract = {Cryptocurrencies, based on and led by Bitcoin, have shown promise as infrastructure for pseudonymous online payments, cheap remittance, trustless digital asset exchange, and smart contracts. However, Bitcoinderived blockchain protocols have inherent scalability limits that trade off between throughput and latency, which withhold the realization of this potential. This paper presents Bitcoin-NG (Next Generation), a new blockchain protocol designed to scale. Bitcoin-NG is a Byzantine fault tolerant blockchain protocol that is robust to extreme churn and shares the same trust model as Bitcoin. In addition to Bitcoin-NG, we introduce several novel metrics of interest in quantifying the security and efficiency of Bitcoin-like blockchain protocols. We implement Bitcoin-NG and perform large-scale experiments at 15{\%} the size of the operational Bitcoin system, using unchanged clients of both protocols. These experiments demonstrate that Bitcoin-NG scales optimally, with bandwidth limited only by the capacity of the individual nodes and latency limited only by the propagation time of the network.},
+author = {Eyal, Ittay and Gencer, Adem Efe and Sirer, Emin G{\"{u}}n and {Van Renesse}, Robbert},
+booktitle = {NSDI},
+file = {:D$\backslash$:/research/scalability/scalability/bitcoin ng.pdf:pdf},
+keywords = {scalability},
+mendeley-tags = {scalability},
+pages = {45--59},
+title = {{Bitcoin-NG: A Scalable Blockchain Protocol.}},
+year = {2016}
+}
+@inproceedings{sokBitcoinChallenges,
+abstract = {Bitcoin has emerged as the most successful cryptographic currency in history. Within two years of its quiet launch in 2009, Bitcoin grew to comprise billions of dollars of economic value despite only cursory analysis of the system's design. Since then a growing literature has identified hidden-but-important properties of the system, discovered attacks, proposed promising alternatives, and singled out difficult future challenges. Meanwhile a large and vibrant open-source community has proposed and deployed numerous modifications and extensions. We provide the first systematic exposition Bitcoin and the many related cryptocurrencies or ‘altcoins.' Drawing from a scattered body of knowledge, we identify three key components of Bitcoin's design that can be decoupled. This enables a more insightful analysis of Bitcoin's properties and future stability. We map the design space for numerous proposed modifications, providing comparative analyses for alternative consensus mechanisms, currency allocation mechanisms, computational puzzles, and key management tools. We survey anonymity issues in Bitcoin and provide an evaluation framework for analyzing a variety of privacy-enhancing proposals. Finally we provide new insights on what we term disintermediation protocols, which absolve the need for trusted intermediaries in an interesting set of applications. We identify three general disintermediation strategies and provide a detailed comparison.},
+annote = {sdfsd},
+author = {Bonneau, Joseph and Miller, Andrew and Clark, Jeremy and Narayanan, Arvind and Kroll, Joshua A and Felten, Edward W},
+booktitle = {Security and Privacy (SP), 2015 IEEE Symposium on},
+file = {:D$\backslash$:/research/scalability/scalability/SoK Research Perspectives and Challenges for Bitcoin and Cryptocurrencies.pdf:pdf},
+organization = {IEEE},
+pages = {104--121},
+title = {{Sok: Research perspectives and challenges for bitcoin and cryptocurrencies}},
+year = {2015}
+}
+@inproceedings{selfishmining,
+abstract = {The Bitcoin cryptocurrency records its transactions in a public log called the blockchain. Its security rests critically on the distributed protocol that maintains the blockchain, run by participants called miners. Conventional wisdom asserts that the protocol is incentive-compatible and secure against colluding minority groups, i.e., it incentivizes miners to follow the protocol as prescribed. We show that the Bitcoin protocol is not incentive-compatible. We present an attack with which colluding miners obtain a revenue larger than their fair share. This attack can have significant consequences for Bitcoin: Rational miners will prefer to join the selfish miners, and the colluding group will increase in size until it becomes a majority. At this point, the Bitcoin system ceases to be a decentralized currency. Selfish mining is feasible for any group size of colluding miners. We propose a practical modification to the Bitcoin protocol that protects against selfish mining pools that command less than 1 /4 of the resources. This threshold is lower than the wrongly assumed 1 /2 bound, but better than the current reality where a group of any size can compromise the system.},
+annote = {first paper to introce selfish mining. 25{\%} hash power is enough to do a selfish mining attack},
+author = {Eyal, Ittay and Sirer, Emin G{\"{u}}n},
+booktitle = {International conference on financial cryptography and data security},
+file = {:D$\backslash$:/research/scalability/scalability/selfish mining.pdf:pdf},
+keywords = {selfish mining},
+mendeley-tags = {selfish mining},
+organization = {Springer},
+pages = {436--454},
+title = {{Majority is not enough: Bitcoin mining is vulnerable}},
+year = {2014}
+}
+@inproceedings{selfishMiningStrategies,
+abstract = {Bitcoin is a decentralized crypto-currency, and an accompanying protocol, created in 2008. Bitcoin nodes continuously generate and propagate blocks—collections of newly approved transactions that are added to Bitcoin's ledger. Block creation requires nodes to invest computational resources, but also carries a reward in the form of bitcoins that are paid to the creator. While the protocol requires nodes to quickly distribute newly created blocks, strong nodes can in fact gain higher payoffs by withholding blocks they create and selectively postponing their publication. The existence of such selfish mining attacks was first reported by Eyal and Sirer [9], who have demonstrated a specific deviation from the standard protocol (a strategy that we name SM1). In this paper we extend the underlying model for selfish mining attacks, and provide an algorithm to find ǫ-optimal policies for attackers within the model, as well as tight upper bounds on the revenue of optimal policies. As a consequence, we are able to provide lower bounds on the computational power an attacker needs in order to benefit from selfish mining. We find that the profit threshold – the minimal fraction of resources required for a profitable attack – is strictly lower than the one induced by the SM1 scheme. Indeed, the policies given by our algorithm dominate SM1, by better regulating attack-withdrawals. Our algorithm can also be used to evaluate protocol modifications that aim to reduce the profitability of selfish mining. We demonstrate this with regard to a suggested countermeasure by Eyal and Sirer, and show that it is slightly less effective than previously conjectured. Next, we gain insight into selfish mining in the presence of communication delays, and show that, under a model that accounts for delays, the profit threshold vanishes, and even small attackers have incentive to occasionally deviate from the protocol. We conclude with observations regarding the combined power of selfish mining and double spending attacks.},
+author = {Sapirshtein, Ayelet and Sompolinsky, Yonatan and Zohar, Aviv},
+booktitle = {International Conference on Financial Cryptography and Data Security},
+file = {:D$\backslash$:/research/scalability/scalability/Optimal Selfish Mining Strategies in Bitcoin.pdf:pdf},
+organization = {Springer},
+pages = {515--532},
+title = {{Optimal selfish mining strategies in bitcoin}},
+year = {2016}
+}
+@inproceedings{stubbornMining,
+abstract = {Selfish mining, originally discovered by Eyal et al. [9], is a well-known attack where a selfish miner, under certain conditions, can gain a disproportionate share of reward by deviating from the honest behavior. In this paper, we expand the mining strategy space to include novel “stubborn” strategies that, for a large range of parameters, earn the miner more revenue. Consequently, we show that the selfish mining attack is not (in general) optimal. Further, we show how a miner can further amplify its gain by non-trivially composing mining attacks with network-level eclipse attacks. We show, surprisingly, that given the attacker's best strategy, in some cases victims of an eclipse attack can actually benefit from being eclipsed!},
+author = {Nayak, Kartik and Kumar, Srijan and Miller, Andrew and Shi, Elaine},
+booktitle = {Security and Privacy (EuroS{\&}P), 2016 IEEE European Symposium on},
+file = {:D$\backslash$:/research/scalability/scalability/stubborn mining.pdf:pdf},
+organization = {IEEE},
+pages = {305--320},
+title = {{Stubborn mining: Generalizing selfish mining and combining with an eclipse attack}},
+year = {2016}
+}
+@inproceedings{minersDillema,
+abstract = {An open distributed system can be secured by requiring participants to present proof of work and rewarding them for participation. The Bitcoin digital currency introduced this mechanism, which is adopted by almost all contemporary digital currencies and related services. A natural process leads participants of such systems to form pools, where members aggregate their power and share the rewards. Experience with Bitcoin shows that the largest pools are often open, allowing anyone to join. It has long been known that a member can sabotage an open pool by seemingly joining it but never sharing its proofs of work. The pool shares its revenue with the attacker, and so each of its participants earns less. We define and analyze a game where pools use some of their participants to infiltrate other pools and perform such an attack. With any number of pools, no-pool-attacks is not a Nash equilibrium. We study the special cases where either two pools or any number of identical pools play the game and the rest of the participants are uninvolved. In both of these cases there exists an equilibrium that constitutes a tragedy of the commons where the participating pools attack one another and earn less than they would have if none had attacked. For two pools, the decision whether or not to attack is the miner's dilemma, an instance of the iterative prisoner's dilemma. The game is played daily by the active Bitcoin pools, which apparently choose not to attack. If this balance breaks, the revenue of open pools might diminish, making them unattractive to participants.},
+author = {Eyal, Ittay},
+booktitle = {Security and Privacy (SP), 2015 IEEE Symposium on},
+file = {:D$\backslash$:/research/scalability/scalability/miners dilemma.pdf:pdf},
+organization = {IEEE},
+pages = {89--103},
+title = {{The miner's dilemma}},
+year = {2015}
+}
+@inproceedings{eclipseAttack,
+abstract = {We present eclipse attacks on bitcoin's peer-to-peer network. Our attack allows an adversary controlling a sufficient number of IP addresses to monopolize all connections to and from a victim bitcoin node. The attacker can then exploit the victim for attacks on bitcoin's mining and consensus system, including N-confirmation double spending, selfish mining, and adversarial forks in the blockchain. We take a detailed look at bitcoin's peerto-peer network, and quantify the resources involved in our attack via probabilistic analysis, Monte Carlo simulations, measurements and experiments with live bitcoin nodes. Finally, we present countermeasures, inspired by botnet architectures, that are designed to raise the bar for eclipse attacks while preserving the openness and decentralization of bitcoin's current network architecture},
+author = {Heilman, Ethan and Kendler, Alison and Zohar, Aviv and Goldberg, Sharon},
+booktitle = {USENIX Security Symposium},
+file = {:D$\backslash$:/research/scalability/scalability/EclipseAttack.pdf:pdf},
+keywords = {double spending,selfish mining},
+mendeley-tags = {double spending,selfish mining},
+pages = {129--144},
+title = {{Eclipse Attacks on Bitcoin's Peer-to-Peer Network.}},
+year = {2015}
+}
+@inproceedings{securityPow,
+abstract = {Proof of Work (PoW) powered blockchains currently account for more than 90{\%} of the total market capitalization of existing digital currencies. Although the security provisions of Bitcoin have been thoroughly analysed, the security guarantees of variant (forked) PoW blockchains (which were instantiated with different parameters) have not received much attention in the literature. In this paper, we introduce a novel quantitative framework to analyse the security and performance implications of various consensus and network parameters of PoW blockchains. Based on our framework, we devise optimal adversarial strategies for doublespending and selfish mining while taking into account real world constraints such as network propagation, different block sizes, block generation intervals, information propagation mechanism, and the impact of eclipse attacks. Our framework therefore allows us to capture existing PoW-based deployments as well as PoW blockchain variants that are instantiated with different parameters, and to objectively compare the tradeoffs between their performance and security provisions.},
+author = {Gervais, Arthur and Karame, Ghassan O and W{\"{u}}st, Karl and Glykantzis, Vasileios and Ritzdorf, Hubert and Capkun, Srdjan},
+booktitle = {Proceedings of the 2016 ACM SIGSAC Conference on Computer and Communications Security},
+file = {:D$\backslash$:/research/scalability/scalability/On the Security and Performance of Proof of Work.pdf:pdf},
+keywords = {double spending,selfish mining},
+mendeley-tags = {double spending,selfish mining},
+organization = {ACM},
+pages = {3--16},
+title = {{On the security and performance of proof of work blockchains}},
+year = {2016}
+}
+@inproceedings{scalingBlockchains,
+abstract = {The increasing popularity of blockchain-based cryptocurrencies has made scalability a primary and urgent concern. We analyze how fundamental and circumstantial bottlenecks in Bitcoin limit the ability of its current peer-to-peer overlay network to support substantially higher throughputs and lower latencies. Our results suggest that reparameterization of block size and intervals should be viewed only as a first increment toward achieving next-generation, high-load blockchain protocols, and major advances will additionally require a basic rethinking of technical approaches. We offer a structured perspective on the design space for such approaches. Within this perspective, we enumerate and briefly discuss a number of recently proposed protocol ideas and offer several new ideas and open challenges. `},
+annote = {what to do after changong block interval and block size for scaling blockchain},
+author = {Croman, Kyle and Decker, Christian and Eyal, Ittay and Gencer, Adem Efe and Juels, Ari and Kosba, Ahmed and Miller, Andrew and Saxena, Prateek and Shi, Elaine and Sirer, Emin G{\"{u}}n and Others},
+booktitle = {International Conference on Financial Cryptography and Data Security},
+file = {:D$\backslash$:/research/scalability/scalability/On scaling decentralized blockchains.pdf:pdf},
+organization = {Springer},
+pages = {106--125},
+title = {{On scaling decentralized blockchains}},
+year = {2016}
+}
+@article{BitcoinSecurityModel,
+abstract = {We revisit the fundamental question of Bitcoin's security against double spending attacks. While previous work has bounded the probability that a transaction is reversed, we show that no such guarantee can be effectively given if the attacker can choose when to launch the attack. Other approaches that bound the cost of an attack have erred in considering only limited attack scenarios, and in fact it is easy to show that attacks may not cost the attacker at all. We therefore provide a different interpretation of the results presented in previous papers and correct them in several ways. We provide different notions of the security of transactions that provide guarantees to different classes of defenders: merchants who regularly receive payments, miners, and recipients of large one-time payments. We additionally consider an attack that can be launched against lightweight clients, and show that these are less secure than their full node counterparts and provide the right strategy for defenders in this case as well. Our results, overall, improve the understanding of Bitcoin's security guarantees and provide correct bounds for those wishing to safely accept transactions.},
+author = {Sompolinsky, Yonatan and Zohar, Aviv},
+file = {:D$\backslash$:/research/scalability/scalability/Bitcoin's Security Model Revisited.pdf:pdf},
+journal = {arXiv preprint arXiv:1605.09193},
+title = {{Bitcoin's security model revisited}},
+year = {2016}
+}
+@article{Rosenfeld,
+abstract = {Bitcoin is the world's first decentralized digital currency. Its main technical innovation is the use of a blockchain and hash-based proof of work to synchronize transactions and prevent double-spending the currency. While the qualitative nature of this system is well understood, there is widespread confusion about its quantitative aspects and how they relate to attack vectors and their countermeasures. In this paper we take a look at the stochastic processes underlying typical attacks and their resulting probabilities of success.},
+author = {Rosenfeld, Meni},
+file = {:D$\backslash$:/research/scalability/scalability/menirosenfeld.pdf:pdf},
+journal = {arXiv preprint arXiv:1402.2009},
+keywords = {confirmation time},
+mendeley-tags = {confirmation time},
+title = {{Analysis of hashrate-based double spending}},
+year = {2014}
+}
+@inproceedings{puzzleHardness,
+abstract = {Nakamoto's famous blockchain protocol enables achieving consensus in a so-called permissionless setting—anyone can join (or leave) the protocol execution, and the protocol instructions do not depend on the identities of the players. His ingenious protocol prevents “sybil attacks” (where an adversary spawns any number of new players) by relying on computational puzzles (a.k.a. “moderately hard functions”) introduced by Dwork and Naor (Crypto'92). The analysis of the blockchain consensus protocol (a.k.a. Nakamoto consensus) has been a notoriously difficult task. Prior works that analyze it either make the simplifying assumption that network channels are fully synchronous (i.e. messages are instantly delivered without delays) (Garay et al, Eurocrypt'15) or only consider specific attacks (Nakamoto'08; Sampolinsky and Zohar, FinancialCrypt'15); additionally, as far as we know, none of them deal with players joining or leaving the protocol. In this work we prove that the blockchain consensus mechanism satisfies a strong forms of consistency and liveness in an asynchronous network with adversarial delays that are a-priori bounded, within a formal model allowing for adaptive corruption and spawning of new players, assuming that the computational puzzle is modeled as a random oracle. (We complement this result by showing a simple attack against the blockchain protocol in a fully asynchronous setting, showing that the puzzle-hardness needs to be appropriately set as a function of the maximum network delay; this attack applies even for static corruption.) As an independent contribution, we define an abstract notion of a blockchain protocol and identify appropriate security properties of such protocols; we prove that Nakamoto's blockchain protocol satisfies them and that these properties are sufficient for typical applications; we hope that this abstraction may simplify further applications of blockchains.},
+annote = {the puzzle-hardness needs to be appropriately set as a function of the maximum
+network delay
+
+notion of responsiveness},
+author = {Pass, Rafael and Seeman, Lior and Shelat, Abhi},
+booktitle = {Annual International Conference on the Theory and Applications of Cryptographic Techniques},
+file = {:D$\backslash$:/research/scalability/scalability/Analysis of the Blockchain Protocol in Asynchronous Networks.pdf:pdf},
+organization = {Springer},
+pages = {643--673},
+title = {{Analysis of the blockchain protocol in asynchronous networks}},
+year = {2017}
+}
+@inproceedings{BlockRewards,
+abstract = {Bitcoin provides two incentives for miners: block rewards and transaction fees. The former accounts for the vast majority of miner revenues at the beginning of the system, but it is expected to transition to the latter as the block rewards dwindle. There has been an implicit belief that whether miners are paid by block rewards or transaction fees does not affect the security of the block chain. We show that this is not the case. Our key insight is that with only transaction fees, the variance of the block reward is very high due to the exponentially distributed block arrival time, and it becomes attractive to fork a “wealthy” block to “steal” the rewards therein. We show that this results in an equilibrium with undesirable properties for Bitcoin's security and performance, and even non-equilibria in some circumstances. We also revisit selfish mining and show that it can be made profitable for a miner with an arbitrarily low hash power share, and who is arbitrarily poorly connected within the network. Our results are derived from theoretical analysis and confirmed by a new Bitcoin mining simulator that may be of independent interest. We discuss the troubling implications of our results for Bitcoin's future security and draw lessons for the design of new cryptocurrencies.},
+annote = {only txn fee not enough when block reward run out. people will selfish mine to steal txn fee from rich block with high txn fee},
+author = {Carlsten, Miles and Kalodner, Harry and Weinberg, S Matthew and Narayanan, Arvind},
+booktitle = {Proceedings of the 2016 ACM SIGSAC Conference on Computer and Communications Security},
+file = {:D$\backslash$:/research/scalability/scalability/On the Instability of Bitcoin Without the Block Reward.pdf:pdf},
+organization = {ACM},
+pages = {154--167},
+title = {{On the instability of bitcoin without the block reward}},
+year = {2016}
+}
+@inproceedings{blockPropagation,
+abstract = {Bitcoin is a digital currency that unlike traditional currencies does not rely on a centralized authority. Instead Bitcoin relies on a network of volunteers that collectively implement a replicated ledger and verify transactions. In this paper we analyze how Bitcoin uses a multi-hop broadcast to propagate transactions and blocks through the network to update the ledger replicas. We then use the gathered information to verify the conjecture that the propagation delay in the network is the primary cause for blockchain forks. Blockchain forks should be avoided as they are symptomatic for inconsistencies among the replicas in the network. We then show what can be achieved by pushing the current protocol to its limit with unilateral changes to the client's behavior},
+annote = {The mean time for a node to see a block is 12.6 seconds, after 40 seconds 95{\%} of the nodes have seen that block},
+author = {Decker, Christian and Wattenhofer, Roger},
+booktitle = {Peer-to-Peer Computing (P2P), 2013 IEEE Thirteenth International Conference on},
+file = {:D$\backslash$:/research/scalability/scalability/information propagation in the bitcoin network.pdf:pdf},
+organization = {IEEE},
+pages = {1--10},
+title = {{Information propagation in the bitcoin network}},
+year = {2013}
+}
+@misc{AverageBlockSize,
+annote = {(Accessed on 02/13/2019)},
+howpublished = {https://www.blockchain.com/en/charts/avg-block-size},
+title = {{Average Block Size - Blockchain}},
+year = {2019}
+}
+@misc{BitcoinBlockSize,
+annote = {(Accessed on 02/13/2019)},
+howpublished = {https://bitinfocharts.com/comparison/bitcoin-size.html},
+title = {{Bitcoin Block Size chart}},
+year = {2019}
+}
+@misc{AverageCT,
+annote = {(Accessed on 02/08/2019)},
+howpublished = {https://www.blockchain.com/en/charts/avg-confirmation-time},
+title = {{Average Confirmation Time - Blockchain}},
+year = {2018}
+}
+@misc{AvgDataPropagation,
+abstract = {Average block and transaction propagation times},
+annote = {(Accessed on 02/13/2019)},
+howpublished = {http://bitcoinstats.com/network/propagation/},
+title = {{BitcoinStats : Average block and transaction propagation times}},
+year = {2017}
+}
+@misc{GlobalDelayStats,
+abstract = {pinging delay around the world},
+annote = {(Accessed on 02/13/2019)},
+howpublished = {https://wondernetwork.com/pings},
+title = {{Global Ping Statistics - WonderNetwork}},
+year = {2019}
+}
+@article{balanceAttack,
+abstract = {In this paper, we identify a new form of attack, called the Balance attack, against proof-of-work blockchain systems. The novelty of this attack consists of delaying network communications between multiple subgroups of nodes with balanced mining power. Our theoretical analysis captures the precise tradeoff between the network delay and the mining power of the attacker needed to double spend in Ethereum with high probability. We quantify our probabilistic analysis with statistics taken from the R3 consortium, and show that a single machine needs 20 minutes to attack the consortium. Finally, we run an Ethereum private chain in a distributed system with similar settings as R3 to demonstrate the feasibility of the approach, and discuss the application of the Balance attack to Bitcoin. Our results clearly confirm that main proof-of-work blockchain protocols can be badly suited for consortium blockchains},
+author = {Natoli, Christopher and Gramoli, Vincent},
+file = {:D$\backslash$:/research/scalability/scalability/The Balance Attack.pdf:pdf},
+journal = {arXiv preprint arXiv:1612.09426},
+keywords = {Chernoff bounds,Ethereum,GHOST,proof-of-work},
+mendeley-tags = {Chernoff bounds,Ethereum,GHOST,proof-of-work},
+title = {{The balance attack against proof-of-work blockchains: The R3 testbed as an example}},
+year = {2016}
+}
+@article{randomWalk,
+abstract = {textbook Chapter 7: Random Walks, Large Deviations, and Martingales},
+author = {Gallager, Robert},
+file = {:D$\backslash$:/research/scalability/scalability/MIT6{\_}262S11{\_}chap07randomwalks.pdf:pdf},
+journal = {Massachusetts Institute of Technology: MIT OpenCourseWare) http://ocw. mit. edu (Accessed 23 Mar, 2013). License: Creative Commons BY-NC-SA},
+title = {{6.262 Discrete stochastic processes, Spring 2011 Chapter 7: Random Walks, Large Deviations, and Martingales}},
+year = {2011}
+}
+@article{ghostChainQuality,
+abstract = {A fundamental open problem in the area of blockchain protocols is whether the Bitcoin protocol is the optimal solution (in terms of eciency, security) for building a secure transaction ledger. A recently proposed and widely considered alternative is the GHOST protocol which, notably, was proposed to be at the core of Ethereum as well as other recent proposals for improved Bitcoin-like systems. The GHOST variant is touted as oering superior performance compared to Bitcoin (potentially oering block production speed up by a factor of more than 40) without a security loss. Motivated by this, in this work, we study from both a provable security and attack susceptibility point of view the problem of transaction processing time for both GHOST and Bitcoin. We introduce a new formal framework for the analysis of blockchain protocols that relies on trees (rather than chains) and we showcase the power of the framework by providing a unied description of the GHOST and Bitcoin protocols, the former of which we extract and formally describe. We then prove that GHOST implements a robust transaction ledger (i.e., possesses liveness and persistence) and hence it is a provably secure alternative to Bitcoin. Our proof follows a novel methodology which may be of independent interest. Given this, we then ask whether GHOST is a better alternative. We focus on the liveness property of both Bitcoin and GHOST, i.e., the worst-case transaction conrmation time that can be expected when playing against an adversary. We present a general attack methodology against liveness and we instantiate it with two attacks for Bitcoin and GHOST. We prove (i) our attack for Bitcoin is optimal and (ii) GHOST, when under our attack, performs, in expectation, worse than Bitcoin under the optimal attack, for various parameter choices. With the above results, our work provides a rst example of comparative study between dierent blockchain designs from a provable security perspective},
+annote = {ghost actualy worsens chain quality},
+author = {Kiayias, Aggelos and Panagiotakos, Giorgos},
+file = {:D$\backslash$:/research/scalability/scalability/On Trees, Chains and Fast Transactions in the Blockchain.pdf:pdf},
+journal = {IACR Cryptology ePrint Archive},
+pages = {545},
+title = {{On Trees, Chains and Fast Transactions in the Blockchain.}},
+volume = {2016},
+year = {2016}
+}
+@inproceedings{inclusiveBlockchain,
+abstract = {Distributed cryptographic protocols such as Bitcoin and Ethereum use a data structure known as the block chain to synchronize a global log of events between nodes in their network. Blocks, which are batches of updates to the log, reference the parent they are extending, and thus form the structure of a chain. Previous research has shown that the mechanics of the block chain and block propagation are constrained: if blocks are created at a high rate compared to their propagation time in the network, many conflicting blocks are created and performance suffers greatly. As a result of the low block creation rate required to keep the system within safe parameters, transactions take long to securely confirm, and their throughput is greatly limited. We propose an alternative structure to the chain that allows for operation at much higher rates. Our structure consists of a directed acyclic graph of blocks (the block DAG). The DAG structure is created by allowing blocks to reference multiple predecessors, and allows for more “forgiving” transaction acceptance rules that incorporate transactions even from seemingly conflicting blocks. Thus, larger blocks that take longer to propagate can be tolerated by the system, and transaction volumes can be increased. Another deficiency of block chain protocols is that they favor more connected nodes that spread their blocks faster—fewer of their blocks conflict. We show that with our system the advantage of such highly connected miners is greatly reduced. On the negative side, attackers that attempt to maliciously reverse transactions can try to use the forgiving nature of the DAG structure to lower the costs of their attacks. We provide a security analysis of the protocol and show that such attempts can be easily countered.},
+author = {Lewenberg, Yoad and Sompolinsky, Yonatan and Zohar, Aviv},
+booktitle = {International Conference on Financial Cryptography and Data Security},
+file = {:D$\backslash$:/research/scalability/scalability/Inclusive Block Chain Protocols.pdf:pdf},
+organization = {Springer},
+pages = {528--547},
+title = {{Inclusive block chain protocols}},
+year = {2015}
+}
+@article{primecoin,
+abstract = {A new type of proof-of-work based on searching for prime numbers is introduced in peer-to-peer cryptocurrency designs. Three types of prime chains known as Cunningham chain of first kind, Cunningham chain of second kind and bi-twin chain are qualified as proof-of-work. Prime chain is linked to block hash to preserve the security property of Nakamoto's Bitcoin, while a continuous difficulty evaluation scheme is designed to allow prime chain to act as adjustable-difficulty proof-of-work in a Bitcoin like cryptocurrency.},
+author = {King, Sunny},
+file = {:D$\backslash$:/research/scalability/scalability/primecoin.pdf:pdf},
+journal = {July 7th},
+title = {{Primecoin: Cryptocurrency with prime number proof-of-work}},
+year = {2013}
+}
+@misc{slowandfastBlockEthereum,
+annote = {Ethereum has $\lambda$ ≈ 15 transactions per second and $\tau$ ≈ 3 minutes to achieve an error probability of 0.04 for $\beta$ = 0.3},
+howpublished = {https://blog.ethereum.org/2015/09/14/on-slow-and-fast-block-times/},
+title = {{On Slow and Fast Block Times}},
+year = {2015}
+}
+@inproceedings{thunderella,
+abstract = {State machine replication, or “consensus”, is a central abstraction for distributed systems where a set of nodes seek to agree on an ever-growing, linearly-ordered log. In this paper, we propose a practical new paradigm called Thunderella for achieving state machine replication by combining a fast, asynchronous path with a (slow) synchronous “fall-back” path (which only gets executed if something goes wrong); as a consequence, we get simple state machine replications that essentially are as robust as the best synchronous protocols, yet “optimistically” (if a super majority of the players are honest), the protocol “instantly” confirms transactions. We provide instantiations of this paradigm in both permissionless (using proof-of-work) and permissioned settings. Most notably, this yields a new blockchain protocol (for the permissionless setting) that remains resilient assuming only that a majority of the computing power is controlled by honest players, yet optimistically—if 3/4 of the computing power is controlled by honest players, and a special player called the “accelerator”, is honest—transactions are confirmed as fast as the actual message delay in the network. We additionally show the 3/4 optimistic bound is tight for protocols that are resilient assuming only an honest majority.},
+author = {Pass, Rafael and Shi, Elaine},
+booktitle = {Annual International Conference on the Theory and Applications of Cryptographic Techniques},
+file = {:D$\backslash$:/research/scalability/scalability/thunderella.pdf:pdf},
+organization = {Springer},
+pages = {3--33},
+title = {{Thunderella: Blockchains with optimistic instant confirmation}},
+year = {2018}
+}
+@misc{weakBlock,
+annote = {(Accessed on 02/15/2019)},
+author = {Andresen, Gavin},
+howpublished = {https://lists.linuxfoundation.org/pipermail/bitcoin-dev/2015-September/011157.html},
+title = {{[bitcoin-dev] Weak block thoughts...}},
+year = {2015}
+}
+@inproceedings{BitcoinMiningPool,
+abstract = {Bitcoin is an innovative decentralized cryptocurrency whose core security relies on a “proof of work” procedure, which requires network participants to repeatedly compute hashes on inputs from a large search space. Finding one of the rare inputs that generates an extremely low hash value is considered a successful attempt, allowing miners to approve new transactions and, in return, to collect rewards in bitcoins. This reward allocation, which provides the incentive for miners to participate, is a random process with a large variance. Miners who desire a steady income thus often participate in mining pools that divide among their members the earned rewards, and reduce this variance. Mining pools are slightly better at coordinating participants due to lowerlatency communication, a fact which implies that they manage to collect slightly higher rewards. We examine dynamics of pooled mining and the rewards that pools manage to collect, and use cooperative game theoretic tools to analyze how pool members may share these rewards. We show that for some network parameters, especially under high transaction loads, it is difficult or even impossible to distribute rewards in a stable way: some participants are always incentivized to switch between pools},
+address = {Richland, SC},
+annote = {@misc{\{}Miningca22:online,
+author = {\{}{\}},
+title = {\{}Mining cartel attack{\}},
+month = {\{}{\}},
+year = {\{}{\}},
+note = {\{}(Accessed on 02/15/2019){\}}
+{\}}first paper on minignpool},
+author = {Lewenberg, Yoad and Bachrach, Yoram and Sompolinsky, Yonatan and Zohar, Aviv and Rosenschein, Jeffrey S},
+booktitle = {Proceedings of the 2015 International Conference on Autonomous Agents and Multiagent Systems},
+file = {:D$\backslash$:/research/scalability/scalability/mining pool.pdf:pdf},
+isbn = {978-1-4503-3413-6},
+keywords = {bitcoin,cooperative game,game theory,mining pool},
+mendeley-tags = {mining pool},
+pages = {919--927},
+publisher = {International Foundation for Autonomous Agents and Multiagent Systems},
+series = {AAMAS '15},
+title = {{Bitcoin Mining Pools: A Cooperative Game Theoretic Analysis}},
+year = {2015}
+}
+@misc{miningCartel,
+annote = {(Accessed on 02/15/2019)},
+title = {BitcoinTalk: Mining cartel attack},
+url = {https://bitcointalk.org/index.php?topic=2227.msg29606{\#}msg29606},
+year = {2010}
+}
+@article{conflux,
+abstract = {This paper presents Conflux, a fast, scalable and decentralized blockchain system that optimistically process concurrent blocks without discarding any as forks. The Conflux consensus protocol represents relationships between blocks as a direct acyclic graph and achieves consensus on a total order of the blocks. Conflux then, from the block order, deterministically derives a transaction total order as the blockchain ledger. We evaluated Conflux on Amazon EC2 clusters with up to 20k full nodes. Conflux achieves a transaction throughput of 5.76GB/h while confirming transactions in 4.5-7.4 minutes. The throughput is equivalent to 6400 transactions per second for typical Bitcoin transactions. Our results also indicate that when running Conflux, the consensus protocol is no longer the throughput bottleneck. The bottleneck is instead at the processing capability of individual nodes.},
+author = {Li, Chenxing and Li, Peilun and Xu, Wei and Long, Fan and Yao, Andrew Chi-chih},
+file = {:D$\backslash$:/research/scalability/scalability/Scaling Nakamoto Consensus to Thousands of Transactions per Second.pdf:pdf},
+journal = {arXiv preprint arXiv:1805.03870},
+keywords = {conflux},
+mendeley-tags = {conflux},
+title = {{Scaling Nakamoto Consensus to Thousands of Transactions per Second}},
+year = {2018}
+}
+@inproceedings{hybridConsensus,
+abstract = {Consensus, or state machine replication is a foundational building block of distributed systems and modern cryptography. Consensus in the classical, “permissioned” setting has been extensively studied in the 30 years of distributed systems literature. Recent developments in Bitcoin and other decentralized cryptocurrencies popularized a new form of consensus in a “permissionless” setting, where anyone can join and leave dynamically, and there is no a-priori knowledge of the number of consensus nodes. So far, however, all known permissionless consensus protocols assume network synchrony, i.e., the protocol must know an upper bound of the network's delay, and transactions confirm slower than this a-priori upper bound. We initiate the study of the feasibilities and infeasibilities of achieving responsiveness in permissionless consensus. In a responsive protocol, the transaction confirmation time depends only on the actual network delay, but not on any a-priori known upper bound such as a synchronous round. Classical protocols in the partial synchronous and asynchronous models naturally achieve responsiveness, since the protocol does not even know any delay upper bound. Unfortunately, we show that in the permissionless setting, consensus is impossible in the asynchronous or partially synchronous models. On the positive side, we construct a protocol called Hybrid Consensus by combining classicalstyle and blockchain-style consensus. Hybrid Consensus shows that responsiveness is nonetheless possible to achieve in permissionless consensus (assuming proof-of-work) when 1) the protocol knows an upper bound on the network delay; 2) we allow a non-responsive warmup period after which transaction confirmation can become responsive; 3) honesty has some stickiness, i.e., it takes a short while for an adversary to corrupt a node or put it to sleep; and 4) less than 1/3 of the nodes are corrupt. We show that all these conditions are in fact necessary – if only one of them is violated, responsiveness would have been impossible. Our work makes a step forward in our understanding of the permissionless model and its differences and relations to classical consensus},
+annote = {introduces the notion of responsiveness},
+author = {Pass, Rafael and Shi, Elaine},
+booktitle = {LIPIcs-Leibniz International Proceedings in Informatics},
+file = {:D$\backslash$:/research/scalability/scalability/Hybrid Consensus.pdf:pdf},
+organization = {Schloss Dagstuhl-Leibniz-Zentrum fuer Informatik},
+title = {{Hybrid consensus: Efficient consensus in the permissionless model}},
+volume = {91},
+year = {2017}
+}
+@article{subchain,
+abstract = {. Orphan risk for large blocks limits Bitcoin's transactional capacity while the lack of secure instant transactions restricts its usability. Progress on either front would help spur adoption. This paper considers a technique for using fractional-difficulty blocks (weak blocks) to build subchains bridging adjacent pairs of real blocks. Subchains reduce orphan risk by propagating blocks layer-by-layer over the entire block interval, rather than all at once when the proof-of-work is solved. Each new layer of transactions helps to secure the transactions included in lower layers, even though none of the transactions have been confirmed in a real block. Miners are incentivized to cooperate building subchains in order to process more transactions per second (thereby claiming more fee revenue) without incurring additional orphan risk. The use of subchains also diverts fee revenue towards network hash power rather than dripping it out of the system to pay for orphaned blocks. By nesting subchains, weak block verification times approaching the theoretical limits imposed by speed-of-light constraints would become possible with future technology improvements. As subchains are built on top of the existing Bitcoin protocol, their implementation does not require any changes to Bitcoin's consensus rules.},
+author = {Rizun, Peter R},
+file = {:D$\backslash$:/research/scalability/scalability/Subchains{\_}A{\_}Technique{\_}to{\_}Scale{\_}Bitcoin{\_}and{\_}Improve.pdf:pdf},
+journal = {Ledger},
+pages = {38--52},
+title = {{Subchains: A technique to scale bitcoin and improve the user experience}},
+volume = {1},
+year = {2016}
+}
+@misc{phantom,
+abstract = {In 2008 Satoshi Nakamoto invented the basis for blockchain based distributed ledgers. The core concept of this system is an open and anonymous network of nodes, or miners, which together maintain a public ledger of transactions. The ledger takes the form of a chain of blocks, the blockchain, where each block is a batch of new transactions collected from users. One primary problem with Satoshi's blockchain is its highly limited scalability. The security of Satoshi's longest chain rule, more generally known as the Bitcoin protocol, requires that all honest nodes be aware of each other's blocks very soon after the block's creation. To this end, the throughput of the system is artificially suppressed so that each block fully propagates before the next one is created, and that very few “orphan blocks” that fork the chain be created spontaneously. In this paper we present PHANTOM, a protocol for transaction confirmation that is secure under any throughput that the network can support. PHANTOM thus does not suffer from the security-scalability tradeoff which Satoshi's protocol suffers from. PHANTOM utilizes a Directed Acyclic Graph of blocks (a blockDAG), a generalization of Satoshi's chain which better supports faster block generation and larger blocks that take longer to propagate. PHANTOM uses a greedy algorithm on the blockDAG to distinguish between blocks mined properly by honest nodes and those that created by non-cooperating nodes who chose to deviate from the mining protocol. Using this distinction, PHANTOM provides a robust full order on the blockDAG in a way that is eventually agreed upon by all honest nodes.},
+author = {Sompolinsky, Y and Zohar, A},
+file = {:D$\backslash$:/research/scalability/scalability/phantom.pdf:pdf},
+publisher = {Cryptology ePrint Archive, Report 2018/104, 2018. https://eprint. iacr. org{\~{}}{\ldots}},
+title = {{Phantom: A scalable blockdag protocol}},
+year = {2018}
+}
+@article{spectre,
+abstract = {A growing body of research on Bitcoin and other permissionless cryptocurrencies that utilize Nakamoto's blockchain has shown that they do not easily scale to process a high throughput of transactions, or to quickly approve individual transactions; blocks must be kept small, and their creation rates must be kept low in order to allow nodes to reach consensus securely. As of today, Bitcoin processes a mere 3-7 transactions per second, and transaction confirmation takes at least several minutes. We present SPECTRE, a new protocol for the consensus core of crypto-currencies that remains secure even under high throughput and fast confirmation times. At any throughput, SPECTRE is resilient to attackers with up to 50{\%} of the computational power (up until the limit defined by network congestion and bandwidth constraints). SPECTRE can operate at high block creation rates, which implies that its transactions confirm in mere seconds (limited mostly by the round-trip-time in the network). Key to SPECTRE's achievements is the fact that it satisfies weaker properties than classic consensus requires. In the conventional paradigm, the order between any two transactions must be decided and agreed upon by all non-corrupt nodes. In contrast, SPECTRE only satisfies this with respect to transactions performed by honest users. We observe that in the context of money, two conflicting payments that are published concurrently could only have been created by a dishonest user, hence we can afford to delay the acceptance of such transactions without harming the usability of the system. Our framework formalizes this weaker set of requirements for a crypto-currency's distributed ledger. We then provide a formal proof that SPECTRE satisfies these requirements.},
+author = {Sompolinsky, Yonatan and Lewenberg, Yoad and Zohar, Aviv},
+file = {:D$\backslash$:/research/scalability/scalability/spectre.pdf:pdf},
+journal = {IACR Cryptology ePrint Archive},
+pages = {1159},
+title = {{SPECTRE: A Fast and Scalable Cryptocurrency Protocol.}},
+volume = {2016},
+year = {2016}
+}
+@misc{Statoshi95:online,
+abstract = {bitcoin bandwidth usage statistics},
+annote = {(Accessed on 02/15/2019)},
+howpublished = {https://statoshi.info/dashboard/db/bandwidth-usage},
+title = {{Statoshi - Bandwidth Usage}},
+year = {2019}
+}
+@article{bano2017consensus,
+abstract = {The blockchain initially gained traction in 2008 as the technology underlying Bitcoin [105], but now has been employed in a diverse range of applications and created a global market worth over {\$}150B as of 2017. What distinguishe s blockchains from traditional distributed databases is the ability to operate in a decentralized setting without relying on a trusted third party. As such their core technical component is consensus : how to reach agreement among a group of nodes. This has been extensively studied already in the distributed systems community for closed systems, but its application to open blockchains has revitalized the field and led to a plethora of new designs. The inherent complexity of consensus protocols and their rapid and dramatic evolution makes it hard to contextualize the design landscape. We address this challenge by conducting a systematic and comprehensive study of blockchain consensus protocols. After first discussing key themes in classical consensus protocols, we describe: ( i) protocols based on proof-of-work (PoW), (ii) proof-of-X (PoX) protocols that replace PoW with more energy-efficient alternatives, and (iii) hybrid protocols that are compositions or variations of classical consensus protocols. We develop a framework to evaluate their performance, security and design properties, and use it to systematize key themes i n the protocol categories described above. This evaluation leads us to identify research gaps and challenges for the community t o consider in future research endeavours.},
+author = {Bano, Shehar and Sonnino, Alberto and Al-Bassam, Mustafa and Azouvi, Sarah and McCorry, Patrick and Meiklejohn, Sarah and Danezis, George},
+file = {:D$\backslash$:/research/scalability/scalability/SoK Consensus in the Age of Blockchains.pdf:pdf},
+journal = {arXiv preprint arXiv:1711.03936},
+title = {{Consensus in the age of blockchains}},
+year = {2017}
+}
+@inproceedings{algorand,
+abstract = {Algorand is a new cryptocurrency that confirms transactions with latency on the order of a minute while scaling to many users. Algorand ensures that users never have divergent views of confirmed transactions, even if some of the users are malicious and the network is temporarily partitioned. In contrast, existing cryptocurrencies allow for temporary forks and therefore require a long time, on the order of an hour, to confirm transactions with high confidence. Algorand uses a new Byzantine Agreement (BA) protocol to reach consensus among users on the next set of transactions. To scale the consensus to many users, Algorand uses a novel mechanism based on Verifiable Random Functions that allows users to privately check whether they are selected to participate in the BA to agree on the next set of transactions, and to include a proof of their selection in their network messages. In Algorand's BA protocol, users do not keep any private state except for their private keys, which allows Algorand to replace participants immediately after they send a message. This mitigates targeted attacks on chosen participants after their identity is revealed. We implement Algorand and evaluate its performance on 1,000 EC2 virtual machines, simulating up to 500,000 users. Experimental results show that Algorand confirms transactions in under a minute, achieves 125× Bitcoin's throughput, and incurs almost no penalty for scaling to more users.},
+author = {Gilad, Yossi and Hemo, Rotem and Micali, Silvio and Vlachos, Georgios and Zeldovich, Nickolai},
+booktitle = {Proceedings of the 26th Symposium on Operating Systems Principles},
+file = {:D$\backslash$:/research/scalability/scalability/Algorand.pdf:pdf},
+organization = {ACM},
+pages = {51--68},
+title = {{Algorand: Scaling byzantine agreements for cryptocurrencies}},
+year = {2017}
+}
+@misc{wikiConformation,
+abstract = {accepted confirmation time in bitcoin},
+annote = {(Accessed on 02/15/2019)},
+howpublished = {https://en.bitcoin.it/wiki/Confirmation},
+title = {{Confirmation - Bitcoin Wiki}},
+year = {2018}
+}
+@misc{wikiScalability,
+annote = {(Accessed on 02/15/2019)},
+howpublished = {https://en.bitcoin.it/wiki/Scalability},
+title = {{Scalability - Bitcoin Wiki}},
+year = {2017}
+}
+@misc{wikiPos,
+annote = {(Accessed on 02/15/2019)},
+howpublished = {https://en.bitcoin.it/wiki/Proof{\_}of{\_}Stake},
+title = {{Proof of Stake - Bitcoin Wiki}},
+year = {2017}
+}
+@misc{ethereumWebsite,
+abstract = {ethereum website},
+annote = {(Accessed on 02/15/2019)},
+howpublished = {https://www.ethereum.org/},
+title = {{Ethereum Project}},
+}
+@misc{bitcoinCode,
+abstract = {bitcoin project bitcoin/bitcoin at v0.16.0},
+annote = {(Accessed on 02/15/2019)},
+howpublished = {https://github.com/bitcoin/bitcoin/tree/v0.16.0},
+title = {{bitcoin project gitHub v0.16.0}},
+year = {2018}
+}
+@inproceedings{byzcoin,
+abstract = {While showing great promise, Bitcoin requires users to wait tens of minutes for transactions to commit, and even then, offering only probabilistic guarantees. This paper introduces ByzCoin, a novel Byzantine consensus protocol that leverages scalable collective signing to commit Bitcoin transactions irreversibly within seconds. ByzCoin achieves Byzantine consensus while preserving Bitcoin's open membership by dynamically forming hash power-proportionate consensus groups that represent recently-successful block miners. ByzCoin employs communication trees to optimize transaction commitment and verification under normal operation while guaranteeing safety and liveness under Byzantine faults, up to a near-optimal tolerance of f faulty group members among 3 f + 2 total. ByzCoin mitigates double spending and selfish mining attacks by producing collectively signed transaction blocks within one minute of transaction submission. Tree-structured communication further reduces this latency to less than 30 seconds. Due to these optimizations, ByzCoin achieves a throughput higher than Paypal currently handles, with a confirmation latency of 15-20 seconds.},
+author = {Kogias, Eleftherios Kokoris and Jovanovic, Philipp and Gailly, Nicolas and Khoffi, Ismail and Gasser, Linus and Ford, Bryan},
+booktitle = {25th USENIX Security Symposium (USENIX Security 16)},
+file = {:D$\backslash$:/research/scalability/scalability/ByzCoin Enhancing Bitcoin Security and Performance collective signing.pdf:pdf},
+pages = {279--296},
+title = {{Enhancing bitcoin security and performance with strong consistency via collective signing}},
+year = {2016}
+}
+@misc{BitGo,
+abstract = {instant confirmation but have to trust a 3rd party},
+annote = {(Accessed on 02/15/2019)},
+howpublished = {https://www.coindesk.com/bitgo-instant-bitcoin-transaction-tool},
+title = {{BitGo Launches 'Instant' Bitcoin Transaction Tool - CoinDesk}},
+year = {2018}
+}
+@misc{UncleMin1:online,
+annote = {(Accessed on 02/16/2019)},
+howpublished = {https://bitslog.wordpress.com/2016/04/28/uncle-mining-an-ethereum-consensus-protocol-flaw/},
+title = {{Uncle Mining, an Ethereum Consensus Protocol Flaw | Bitslog}},
+}
+@book{feller2008introduction,
+abstract = {result- conditioned on there being N Poison arrivals in a given interval, they are uniformly distributed},
+annote = {result- conditioned on there being N Poison arrivals in a given interval, they are uniformly distributed},
+author = {Feller, Willliam},
+publisher = {John Wiley {\&} Sons},
+title = {{An introduction to probability theory and its applications}},
+year = {1957}
+}
+@article{bitcoinOriginal,
+abstract = {A purely peer-to-peer version of electronic cash would allow online payments to be sent directly from one party to another without going through a financial institution. Digital signatures provide part of the solution, but the main benefits are lost if a trusted third party is still required to prevent double-spending. We propose a solution to the double-spending problem using a peer-to-peer network. The network timestamps transactions by hashing them into an ongoing chain of hash-based proof-of-work, forming a record that cannot be changed without redoing the proof-of-work. The longest chain not only serves as proof of the sequence of events witnessed, but proof that it came from the largest pool of CPU power. As long as a majority of CPU power is controlled by nodes that are not cooperating to attack the network, they'll generate the longest chain and outpace attackers. The network itself requires minimal structure. Messages are broadcast on a best effort basis, and nodes can leave and rejoin the network at will, accepting the longest proof-of-work chain as proof of what happened while they were gone.},
+annote = {original bitcoin paper},
+author = {Nakamoto, Satoshi},
+file = {:D$\backslash$:/research/scalability/scalability/bitcoin.pdf:pdf},
+keywords = {bitcoin,blockchain},
+mendeley-tags = {bitcoin,blockchain},
+publisher = {Working Paper},
+title = {{Bitcoin: A peer-to-peer electronic cash system}},
+year = {2008}
+}
+@misc{bitcoinBook,
+abstract = {textbook},
+author = {Arvind Narayanan; Joseph Bonneau; Edward Felten; Andrew Miller, Steven Goldfeder},
+file = {:D$\backslash$:/research/scalability/scalability/Princeton Bitcoin and Cryptocurrency Technologies Course.pdf:pdf},
+title = {{Bitcoin and Cryptocurrency Technologies - Princeton University Press}},
+year = {2015},
+url={https://d28rh4a8wq0iu5.cloudfront.net/bitcointech/readings/princeton_bitcoin_book.pdf}
+}
+@inproceedings{backboneprotocol,
+abstract = {Bitcoin is the first and most popular decentralized cryptocurrency to date. In this work, we extract and analyze the core of the Bitcoin protocol, which we term the Bitcoin backbone, and prove two of its fundamental properties which we call common prefix and chain quality in the static setting where the number of players remains fixed. Our proofs hinge on appropriate and novel assumptions on the “hashing power” of the adversary relative to network synchronicity; we show our results to be tight under high synchronization. Next, we propose and analyze applications that can be built “on top” of the backbone protocol, specifically focusing on Byzantine agreement (BA) and on the notion of a public transaction ledger. Regarding BA, we observe that Nakamoto's suggestion falls short of solving it, and present a simple alternative which works assuming that the adversary's hashing power is bounded by 1/3. The public transaction ledger captures the essence of Bitcoin's operation as a cryptocurrency, in the sense that it guarantees the liveness and persistence of committed transactions. Based on this notion we describe and analyze the Bitcoin system as well as a more elaborate BA protocol, proving them secure assuming high network synchronicity and that the adversary's hashing power is strictly less than 1/2, while the adversarial bound needed for security decreases as the network desynchronizes. Finally, we show that our analysis of the Bitcoin backbone protocol for synchronous networks extends with relative ease to the recently considered “partially synchronous” model, where there is an upper bound in the delay of messages that is unknown to the honest parties.},
+annote = {we term the Bitcoin backbone, and
+prove two of its fundamental properties which we call common prefix and chain quality in the
+static setting where the number of players remains fixed.
+
+2 for 1 trick for pow},
+author = {Garay, Juan and Kiayias, Aggelos and Leonardos, Nikos},
+booktitle = {Annual International Conference on the Theory and Applications of Cryptographic Techniques},
+file = {:D$\backslash$:/research/scalability/scalability/bitcoin backbone.pdf:pdf},
+organization = {Springer},
+pages = {281--310},
+title = {{The bitcoin backbone protocol: Analysis and applications}},
+year = {2015}
+}
+@inproceedings{fruitchain,
+abstract = {Nakamoto's famous blockchain protocol enables achieving consensus in a so-called permis-sionless setting—anyone can join (or leave) the protocol execution, and the protocol instructions do not depend on the identities of the players. His ingenious protocol prevents " sybil attacks " (where an adversary spawns any number of new players) by relying on computational puzzles (a.k.a. " moderately hard functions ") introduced by Dwork and Naor (Crypto'92). Recent work by Garay et al (EuroCrypt'15) and Pass et al (manuscript, 2016) demonstrate that this protocol provably achieves consistency and liveness assuming a) honest players control a majority of the computational power in the network, b) the puzzle-hardness is appropriately set as a function of the maximum network delay and the total computational power of the network, and c) the computational puzzle is modeled as a random oracle. Assuming honest participation, however, is a strong assumption, especially in a setting where honest players are expected to perform a lot of work (to solve the computational puzzles). In Nakamoto's Bitcoin application of the blockchain protocol, players are incentivized to solve these puzzles by receiving rewards for every " block " (of transactions) they contribute to the blockchain. An elegant work by Eyal and Sirer (FinancialCrypt'14), strengthening and formal-izing an earlier attack discussed on the Bitcoin forum, demonstrates that a coalition controlling even a minority fraction of the computational power in the network can gain (close to) 2 times its " fair share " of the rewards (and transaction fees) by deviating from the protocol instruc-tions. In contrast, in a fair protocol, one would expect that players controlling a $\phi$ fraction of the computational resources to reap a $\phi$ fraction of the rewards. In this work, we present a new blockchain protocol—the FruitChain protocol—which satis-fies the same consistency and liveness properties as Nakamoto's protocol (assuming an honest majority of the computing power), and additionally is $\delta$-approximately fair : with overwhelming probability, any honest set of players controlling a $\phi$ fraction of computational power is guar-anteed to get at least a fraction (1 − $\delta$)$\phi$ of the blocks (and thus rewards) in any Ω($\kappa$ $\delta$) length segment of the chain (where $\kappa$ is the security parameter). As a consequence, if this blockchain protocol is used as the ledger underlying a cryptocur-rency system, where rewards and transaction fees are evenly distributed among the miners of blocks in a length $\kappa$ segment of the chain, no coalition controlling less than a majority of the computing power can gain more than a factor (1 + 3$\delta$) by deviating from the protocol (i.e., honest participation is an n 2 -coalition-safe 3$\delta$-Nash equilibrium). Finally, the FruitChain protocol enables decreasing the variance of mining rewards and as such significantly lessens (or even obliterates) the need for mining pools.},
+author = {Pass, Rafael and Shi, Elaine},
+booktitle = {Acmccs},
+doi = {10.1145/3087801.3087809},
+file = {:C$\backslash$:/Users/dell/Desktop/p315-pass.pdf:pdf},
+isbn = {9550151026},
+keywords = {-  Security and privacy  -{\textgreater}  Distributed systems s,blockchains,distributed consensus,fairness,nash equilibrium},
+pages = {1--26},
+pmid = {19644474},
+title = {{FruitChains: A Fair Blockchain.}},
+volume = {2016},
+year = {2017}
+}
+
+
+@misc{WikiScalability,
+	author = {},
+	title = {Bitcoin scalability problem - Wikipedia},
+	howpublished = {\url{https://en.wikipedia.org/wiki/Bitcoin_scalability_problem}},
+	month = {February},
+	year = {2019},
+	note = {(Accessed on 02/17/2019)}
+}
+
+@article{speedSecurityTradeoff,
+	abstract = {Transaction processing speed is one of the major considerations in cryptocurrencies that are based on proof of work (POW) such as Bitcoin. At an intuitive level it is widely understood that processing speed is at odds with the security aspects of the underlying POW based consensus mechanism of such protocols, nevertheless the tradeo between the two properties is still not well understood. In this work, motivated by recent work [8] in the formal analysis of the Bitcoin backbone protocol, we investigate the tradeo between provable security and transaction processing speed viewing the latter as a function of the block generation rate. We introduce a new formal property of blockchain protocols, called chain growth, and we show it is fundamental for arguing the security of a robust transaction ledger. We strengthen the results of [8] in the following ways: we show how the properties of persistence and liveness of the ledger reduce in a black-box fashion in the underlying properties of the backbone protocol, namely common prex, chain quality and chain growth, and we improve the security bounds showing that the robustness of the ledger holds for even the faster (than Bitcoin's) block generation rates which have been adopted by other alt-coins. We also present a theoretical attack against bitcoin which we validate in simulation that works when blockchain rate is highly accelerated. This presents a natural upper bound in the context of the speed-security tradeo. By combining our positive and negative results we map the speed/security domain for blockchain protocols and list open problems for future work.},
+	author = {Kiayias, Aggelos and Panagiotakos, Giorgos},
+	journal = {IACR Cryptology ePrint Archive},
+	mendeley-groups = {PODC19},
+	pages = {1019},
+	title = {{Speed-Security Tradeoffs in Blockchain Protocols.}},
+	url = {},
+	volume = {2015},
+	year = {2015}
+}
+
+
+
+@misc{filecoin,
+	annote = {(Accessed on 02/17/2019)},
+	howpublished = {$\backslash$url{\{}https://filecoin.io/filecoin.pdf{\}}},
+	mendeley-groups = {PODC19},
+	title = {filecoin.pdf},
+	url = {https://filecoin.io/filecoin.pdf}
+}
+
+@misc{simpleRandomWalk,
+author = {Sven Erick Alm},
+title = {Simple random walk},
+howpublished = {},
+month = {},
+year = {2006},
+note = {}
+}
