@@ -2,21 +2,29 @@
 1 Introduction
 
     1.1 Blockchain Systems (/ technology?)
+
+    1.2 Bitcoin
         * Proof-of-Work
         * Chain forks & the problems they cause
  
-    1.2 Bitcoin
         * Intro: Created, Nakamoto, Uses Proof-of-Work
         * Design / Protocols: BitP, TCP-RPCs
         * C++ build process (flags we used) etc.
 
-    1.3 Anchors
-        * What are they
-        * How they could help (motivation)
-        
-2 Implementation
+2 Anchors
 
-    2.1 Anchors
+    * Definition
+    * Structure
+
+    * Generation
+    * Propagation
+    * Processing
+
+    * Properties
+        
+3 Implementation
+
+    3.1 Anchors in Bitcoin
         * Algorithms, Data structures
 
         * RPCs:
@@ -25,13 +33,18 @@
 
             * Code path diagrams?
     
-    2.2 Test Bed
+    3.2 Test Bed for Experiments
         * Master / Slave architecture
             * 3 generations?
 
         * Txn Generation
+            * Master used to send to all
+            * Separate script
+                * sendtoaddress
+                * Tried using jmeter
+                * sendmany
 
-3 Experiments
+4 Experiments & Results
 
     * Setup
         * Baadal machines
@@ -52,6 +65,6 @@
 
     * Block Sizes
 
-4 Results & Conclusion
+<!-- 5 Results  -->
 
-Also, should I only write about our final design? or should I also go into things that we tried but didn't work out (like JMeter etc.)
+5 Conclusion & Future Work
