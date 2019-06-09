@@ -1,51 +1,148 @@
-% Anchors
-% 
-%     * Definition
-%     * Structure
-
-%     * Generation
-%     * Propagation
-%     * Processing
-
-%     * Properties
-
 \chapter{Anchors} \label{ch-anchors}
+
+In this chapter, we describe the the key contribution of this thesis - Anchors. We begin with their structure and then discuss their lifecycle - how they're generated, propagated and processed. 
+We also list down some properties that Anchors have, which make them well suited to solve the problems listed in the last section (\ref{intro-problems}).
 
 %----------------------------------------------------------------------------------------
 
-\fixme{Think of better names for these sections!}
+\section{Structure} \label{anc-structure}
 
-\section{Definition \& Structure} \label{anc-defn}
+An \textbf{Anchor} is a small bit string consisting of 
 
-\begin{itemize}
-    \item Image of structures
-    \item Image of pie chart
-\end{itemize}
+\begin{enumerate}[i]
+    \item Hash of solution block in the main chain, called its \textit{parent block}, and 
+    \item a solution of a Proof-of-Work puzzle that is different (and easier) than that of a block.
+\end{enumerate}
 
+Optionally, it may contain information to reward the miner for performing the work to generate an anchor.
+This can be done the same way as Bitcoin - by including a Coinbase transaction that creates fresh Bitcoins (in that it has no inputs) to reward the miner.
+
+\paragraph{Note: } Do note that Anchors contain no other information, specifically, no other transactions. 
+So they have a considerably smaller body when compared to Bitcoin blocks.
+
+\info{Draw diagrams: block / anchor structure}
+
+In our implementation (see Chapter \ref{ch-impl}) an Anchor is identical to an empty Bitcoin block - one that contains no transactions apart from the Coinbase.
+Since anchors contain PoW, they (like blocks) also contribute weight to the chain they belong to.
 %----------------------------------------------------------------------------------------
 
 % If the content turns out to be smaller than the paper
 % then we don't even have to create a separate section?
 
-\section{Generation \& Processing}
+\section{Lifecycle}
 
 \subsection{Generation} \label{anc-gen}
+
+\begin{figure}[!htb]
+    \centering
+	\includegraphics[width=0.8\textwidth]{"Difficulty Targets".pdf}
+    \caption[Block vs Anchor difficulty targets]{
+        Block vs Anchor difficulty targets.\\
+        \footnotesize
+        2\textsuperscript{256} values are possible when using the SHA-256 hash function. \\
+        A part of which contains valid Block hashes, while a larger \& non-overlapping part contains valid Anchor hashes.
+    }
+    \label{fig-targets}
+\end{figure}
+
+An Anchor is generated akin to a block but on a larger \& non-overlapping as shown in Figure \ref{fig-targets}.
+This is similar to the 2-for-1 PoW technique used in \cite{backboneprotocol, fruitchain, prism}.
+A miner, when mining for a block checks for each nonce value in the header, if he has found a valid block.
+In case this isn't, the same solution can then be checked to see if it is valid anchor, in which case the miner publishes the anchor (along with the coinbase and a merkle path of the coinbase to the root of the tree.) 
+{\em This method ensures that no additional effort is needed for mining an anchor}. 
+The miner can simply continue the mining process in search of the next block (or anchor) on the chain. 
+
+% The Honest miner broadcasts an Anchor to its peers as soon as it is generated and updates the weight of his chain locally.
+
+The Merkle path that is additionally sent, is needed to prove to a receiver that the coinbase contained in the Anchor actually belongs to the Merkle tree of transactions whose root is stored in the header \cite{bitcoinOriginal}. 
+The value in the 'hash of the previous block' field of the published anchor is the hash-pointer to the parent block of the anchor. 
+It is important to note that, the other values in the header like difficulty targets and the coinbase were originally intended for the next block and since a trial solution became an anchor these fields could not be updated. 
+
 \subsection{Propagation} \label{anc-prop}
+
+Once an Anchor has been found, it needs to be propagated throughout the network.
+Published Anchors propagate through the P2P network similar to transactions and blocks. 
+The small size of Anchors (as compared to blocks) allows them to propagate faster throughout the network. 
+The effects of including Anchors with respect to propagation times are discussed in section \ref{exp-prop} while the results from the experiments are in Sections \ref{res-prop-1}, \ref{res-prop-2}. 
+
 \subsection{Processing} \label{anc-proc}
+
+A node upon receiving a valid Anchor updates the weight of the chain(s)
+\footnote{More than one chain is possible when the received Anchor points to an older Block and since then the chain has been forked} it belongs to. 
+The node then forwards the Anchor to all its neighboring peers. 
+If the revised weight introduced by the new Anchor causes a switch in case of a fork, as calculated by the Heaviest Chain Rule, the node shifts to the new chain tip and continues mining on that chain.
 
 %----------------------------------------------------------------------------------------
 
-\section{Properties of Anchors} \label{anc-properties}
+\section{Properties} \label{anc-properties}
+
+We now list some properties of anchors that make them suitable to solve the problems listed in section \ref{intro-problems}.
 
 \begin{itemize}
-    \item \textbf{Higher Frequency}
-    \item \textbf{Faster Propagation}
-    \item \textbf{Faster Verifcation}
-    \item \textbf{Non-Forking}
-    \item \textbf{Non Precomputable}
+    \item \textbf{Higher Frequency: } 
+        Anchors are generated using a larger PoW target size than blocks. 
+        They are hence generated at a faster rate adding weight more smoothly to the chain than blocks. 
+
+    \item \textbf{Faster Propagation: }
+        Anchors are fixed size, small structures containing minimal data (only the header and optionally coinbase with no other transactions). Hence, Anchors are light weight and propagate faster in the network than blocks.
     
-    % Mention this separately somewhere else?
-    % \item \textbf{No extra hashing power} 
+    \item \textbf{Faster Verifcation: }
+        Since Anchors do not contain transactions, they can be easily verified in O(1) time. 
+        A node only needs to check whether a received Anchor satisfies the PoW difficulty target. 
+        While, for a block, all transactions contained within it must also go through a verifcation process - checked for double-spends etc.
+    
+    \item \textbf{Non-Forking: }
+        Anchors cannot create new forks in the chain, unlike blocks, as no block or anchor can point to another Anchor. Consequently, every successfully mined and published Anchor may contribute to the weight of the branch(es) its parent block is in.
+    
+    % \item \textbf{Non Precomputable: }
+    %     Anchors contain a pointer to a recent block on the main chain on which they were mined on. Hence they are not precomputable.
+
+    \item \textbf{No extra hashing power: } 
+        Since Blocks and Anchors are simultaneously mined on non-overlapping target spaces as shown in Figure \ref{fig-targets}, Anchors do not require extra hashing power to generate.
+
+\end{itemize}
+
+%----------------------------------------------------------------------------------------
+
+\section{Benefits} \label{anc-benefits}
+
+The above mentioned properties make Anchors a useful tool in solving various problems and lead to the following benefits:
+
+\begin{itemize}
+	\item \textbf{Faster Fork Resolution:} 
+        Anchors provide a fast signaling mechanism for miners to know which chain has a majority of the hashing power of the network. 
+        In case of a fork, the system has to wait only for the first Anchor to resolve it, rather than the next block like Bitcoin.
+        This matters because Anchors are generated at a higher rate than Blocks so arrive more frequently.
+        % This gives them insight into the surviving chain of a fork  as shown in Figure \ref{fig:forkresolution}. 
+        %Anchors provide fast signaling of hash power working on the chain. 
+        %Miners can use this information to decide on which chain to extend thus resolving forks faster. 
+        % This feature is especially useful in systems with high fork rates~\cite{GHOST,EthereumOriginal,spectre,conflux,phantom}
+	
+        %Miners can simply switch to a heavier branch determined by the weight contributed by anchors thereby resolving forks much faster than traditional blockchains without anchors as shown in Figure \ref{fig:forkresolution}. 
+        %Anchors provide the means for miners to know where the majority of hashing power of the network lies, which also helps in quick resolution of forks.
+        % Anchors help attain stability much faster when the system is threatened especially when the block interval time is particularly large to resolve a fork and an attacker has a long window to take advantage of the division of honest power.
+	
+    \item \textbf{Increased Stability and Reduced confirmation time:} 
+        Anchors increase stability with a steady contribution to the weight of the chain which makes selfish mining attacks harder. 
+        Consequently they reduce the confirmation time of transactions and make double-spends more difficult.
+        %  as shown in Figure \ref{fig:}
+		
+        %	\item \textbf{Reduces chance of selfish mining and confirmation time:} The steady growth on of weight on the honest chain significantly reduce chances of selfish mining attacks with lower confirmation time guarantees.
+	
+        %	\item \textbf{Avoids Double Spends:} Double spend attacks can be avoided at a much earlier stage with the help of Anchors as chances of selfish mining are greatly reduced.
+
+    \item \textbf{Eliminates need to join Mining Pools:} 
+        Over time, Bitcoin mining has become centralized in that a few Mining Pools control a large portion of the mining power.
+        Miners are incentivised to join a pool since Block solutions are scarce and being able to find one is hard for a lone miner.
+        As Anchors are generated at a faster rate than blocks, these small miners can reap the anchor rewards more smoothly over time, thus reducing the need for them to join the pools. 
+        
+    %\vinay{What you have said below is very important. Only problem is that we have not yet quantified how anchors help scaling up throughput. Also, there are tons of other methods for scaling up throughput. We should probably just stick to discussing stability.}
+    % \item \textbf{Contributes to Scalability of Bitcoin:} 
+    %     The problem of increasing Bitcoin’s transaction throughput is known as the Scalability problem. 
+    %     The two main options to tackle this are (i) to increase the size of blocks, or (ii) to decrease the block intervals. 
+    %     Both options lead to an undesirable outcome: an increase in the rate of forks. 
+    %     The block-size/block-interval parameter adjustment is a difficult line to toe, as is clear from the tenor of the scalability debate. With the help of anchors helping solve the forking problem, we can even look at these previous approaches to scalability from a new perspective~\cite{bitcoinNG,EthereumOriginal}
+	
 \end{itemize}
 
 %----------------------------------------------------------------------------------------
