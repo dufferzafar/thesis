@@ -1,17 +1,20 @@
 %----------------------------------------------------------------------------------------
 
+\newpage
 \section{Bitcoin} \label{intro-bitcoin}
 
-Bitcoin is a digital currency (also called crypto-currency) that was first proposed by the pseudonymous "Satoshi Nakamoto" \cite{bitcoinOriginal}.
+Bitcoin is a digital currency (also called crypto-currency) that was first proposed by the pseudonymous \footnote{It is unknown whether Satoshi is a person or a group of persons. Multiple people have tried to present "proof" that they're indeed Satoshi but there is still doubt.} "Satoshi Nakamoto" \cite{bitcoinOriginal}. 
+
+Full node.
+
+Form a Bitcoin network. The network is responsible for maintains 
 
 %----------------------------------------------------------------------------------------
 
 \newpage
-\subsection{Proof-of-Work} \label{btc-pow}
+\subsection{Proof-of-Work Consensus} \label{btc-pow}
 
 Proof of Work is one of the mechanisms used by a Blockchain system to achieve consensus on the set of records (transactions in case of a Digital Ledger) that are considered valid. 
-
-% It's use as a consensus mechanism was first made by the pseudonymous "Satoshi Nakamoto" in the Bitcoin crypto-currency \cite{bitcoinOriginal}.
 
 \begin{itemize}
     \item 1 cpu 1 vote
@@ -21,41 +24,64 @@ Proof of Work is one of the mechanisms used by a Blockchain system to achieve co
 %----------------------------------------------------------------------------------------
 
 \newpage
-\subsection{Architecture / Design} \label{btc-arch}
+\subsection{Bitcoin Core} \label{btc-arch}
+
+The reference implementation of Bitcoin, known as Bitcoin Core \cite{bitcoinGithub}, was first written in C++ by Staoshi Nakamoto and released to the public on 9 Januray, 2009 \cite{bitcoinCoreWiki}. The development was later picked up by a community of developers, lead by Wladimir J. van der Laan (as of 2019), who continue to maintain the code on GitHub (a site that hosts open-source code repositories). 
+
+% Mention BIPs?
+
+% We used the stable version (v0.16 released on 26-02-2018) of Bitcoin Core that was available to us before we started working on this project. For reference, the latest stable release of Bitcoin is v0.18 and was released on 18-05-2019. 
+
+Most of Bitcoin Core is written in C++ and is available for all major operating systems like Windows, macOS and Linux \cite{bitcoinDownload}. 
+
+Bitcoin Core includes four clients, three of which are command line-based: 
 
 \begin{itemize}
-    \item Go through the Bitcoin Adventures doc
-    \item Modes of operation - regtest etc?
-    \item Diagram from the PPT?
-    \item Protocols used - RPC / BitP - separate subsubsections? 
-    \item this interface can be password protected so only authorised clients can make the calls
+    \item \textit{bitcoind} - also called "bitcoin daemon" - is the main application that runs in background as a Bitcoin full node. It also contains a wallet implementation which can fully verify payments.
+
+    \item \textit{bitcoin-cli} - once the daemon is running in background, this application acts as an interface for controlling the daemon's behaviour. It works by sending appropriate RPC commands to the daemon.
+
+    \item \textit{bitcoin-tx} - 
+
+    \item \textit{bitcoin-qt} - this GUI based application acts as a frontend 
+\end{itemize}
+
+The source repository also includes functional and unit-tests for the Core source code.
+
+We now give some details on the design of Bitcoin Core:
+
+\subsubsection{Modes of Operation} \label{btc-modes}
+
+The Bitcoin daemon can be run in three modes which differ in the blockchain they maintain and the consensus parameters they use:
+
+\begin{itemize}
+    \item \textbf{Mainnet} - This is the default mode of operation, where the daemon 
+    \item \textbf{Testnet} - 
+    \item \textbf{Regtest} - 
+\end{itemize}
+
+\subsubsection{Protocols} \label{btc-interfaces}
+
+A running Bitcoin daemon has support for three protocols, each of which serves a distinct purpose.
+
+\begin{itemize}
+    \item \textbf{Bitcoin Protocol} - This is the protocol that a Bitcoin node uses to send or receive data from other nodes in the Bitcoin network. This custom networking protocol is built upon TCP.
+    %  and uses various message types 
+
+    \item \textbf{HTTP REST API} - 
+
+    \item \textbf{RPC API} - The Remote Procedure Call (RPC) interface of a Bitcoin node can be used by other clients to send commands to it that control the behaviour of the node.
+    This interface can be password protected so only authorised users can send commands.
 \end{itemize}
 
 \begin{figure}[!htb]
     \centering
     \includegraphics[width=\textwidth]{"Bitcoin Protocols".pdf}
-    \caption{Overview of the Two Protocol interfaces used by Bitcoin Core}
+    \caption[Protocol interfaces used by Bitcoin Core.]
+    {
+        Protocol interfaces used by Bitcoin Core. \\
+        \footnotesize
+        \textit{bitcoin-cli} can only use the RPC API to send commands, while a Python script can use either 
+    }
     \label{fig-btc-arch}
 \end{figure}
-
-%----------------------------------------------------------------------------------------
-
-\newpage
-\subsection{Building Bitcoin} \label{btc-build}
-
-\begin{itemize}
-    \item Written in C++; cross-platform
-    \item Instructions to develop on Arch / Ubuntu 16 machines
-    \item Exact flags we used and why?
-\end{itemize}
-
-%----------------------------------------------------------------------------------------
-
-\newpage
-\subsection{Forks \& Their Problems} \label{btc-forks}
-
-\begin{itemize}
-    \item Heaviest chain rule
-    \item What problems do they cause? (list from the paper)
-    \item Appropriate references?
-\end{itemize}
