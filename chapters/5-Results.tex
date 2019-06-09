@@ -6,7 +6,7 @@
 We conducted all experiments in 4 configurations, controlled by the \\ \textit{anchorsperblock} parameter, so a system without anchors (a = 0), and systems with anchor frequencies per block a = 2, 5 and 10. 
 Each configuration was run 15 times for one hour, with block inter-arrival time fixed to be 30 seconds. So the expected number of blocks in each run were about 120 (60 minutes / 30 seconds).
 
-\section{Comparing propagation times of blocks in the presence of Anchors vs propagation time of Anchors}
+\section{Propagation times of Anchors vs propagation time of Blocks (with Anchors)} \label{res-prop-1}
 For the anchor structure implemented, we see that all anchors have a fixed size of 264 Bytes. The median block size observed across all runs of our experiments was 
 932KB. 
 Comparing average propagation times of Blocks vs Anchors, we observed that anchor propagation times are at least 
@@ -14,43 +14,43 @@ Comparing average propagation times of Blocks vs Anchors, we observed that ancho
 
 \begin{figure}[!htb]
     \centering
-    \includegraphics[width=0.6\textwidth]{"Propagation Times".pdf}
+    \includegraphics[width=0.7\textwidth]{"Propagation Times".pdf}
     \caption{Mean propagation times of anchors, and blocks with and without the presence of anchors }
     \label{fig-prop-times}
 \end{figure}
 
-\section{Comparing propagation times of blocks with and without the presence of anchors}
+\section{Propagation times of Blocks with and without Anchors} \label{res-prop-2}
 
 Figure \ref{fig-prop-times} plots the propagation time of blocks with and without anchors. We observe that these two are comparable, with propagation times with anchors increasing only 
 0, 
 5 and 
 17 percent for $a$ = 2, 5 and 10. We can thus say that anchors may work with the system without creating bandwidth or latency overheads. 
 
-\section{Frequency of Anchors per block vs Resolution Time of Forks (RTF)}
+\section{Frequency of Anchors per Block vs Resolution time of forks (RTF)} \label{res-frt}
 
 We observe that anchors reduce the mean fork resolution time by 70, 82 and 96 percent, with a = 2, 5 and 10 respectively. 
 Figure \ref{fig-forks-rtf} shows the results of average resolution time of forks we saw in our network while varying anchor frequency (a) to 2, 5, and 10 when compared to the Bitcoin network without anchors. 
 
 \begin{figure}[!htb]
     \centering
-    \includegraphics[width=0.6\textwidth]{"Fork Resolution Times".pdf}
+    \includegraphics[width=0.7\textwidth]{"Fork Resolution Times".pdf}
     \caption{Mean Resolution Time of Forks (RTF) for different values of a along with 95\% confidence intervals}
     \label{fig-forks-rtf}
 \end{figure}
 
-\section{Unition of mining power in case of forks with anchors}
+\section{Unition of mining power in forks in the presence of Anchors} \label{res-unition}
 
 Forks are resolved at each miner, based on the chain he observes locally. 
 We found that, for every fork, the branch chosen by the miner to resolve it was the same across the network. Thus anchors succeed in reuniting mining power (divided across the branches of a fork) to the same chain.
 
-\section{Frequency of Anchors per block vs Number of forks prevented}
+\section{Frequency of Anchors per Block vs Number of forks prevented} \label{res-fork-prev}
 
 For this experiment, we calculate the number of forks prevented as the number of miners on which the fork is resolved before occurring due to anchors. 
 Figure \ref{fig-forks-prevented} shows the average number of forks prevented when varying $a$ between 2, 5 and 10, and comparing it to a system without anchors. We observe that the inclusion of anchors prevents forks from occurring.
 
 \begin{figure}[!htb]
     \centering
-    \includegraphics[width=0.6\textwidth]{"Forks Prevented".pdf}
+    \includegraphics[width=0.7\textwidth]{"Forks Prevented".pdf}
     \caption{Mean number of forks prevented in a blockchain of length 50 and a network of 114 miners, with 5\% confidence intervals}
     \label{fig-forks-prevented}
 \end{figure}
