@@ -16,7 +16,7 @@ annote = {origianl etherrum paper
 use for ghost},
 author = {Buterin, Vitalik and Others},
 file = {:D$\backslash$:/research/scalability/scalability/ethereum{\_}whitepaper.pdf:pdf},
-journal = {URL https://github.com/ethereum/wiki/wiki/White-Paper},
+url = {https://github.com/ethereum/wiki/wiki/White-Paper},
 title = {{Ethereum white paper, 2014}},
 year = {2013}
 }
@@ -24,9 +24,7 @@ year = {2013}
 abstract = {Bitcoin is a disruptive new crypto-currency based on a decentralized open-source protocol which has been gradually gaining momentum. Perhaps the most important question that will affect Bitcoin's success, is whether or not it will be able to scale to support the high volume of transactions required from a global currency system. We investigate the implications of having a higher transaction throughput on Bitcoin's security against double-spend attacks. We show that at high throughput, substantially weaker attackers are able to reverse payments they have made, even well after they were considered accepted by recipients. We address this security concern through the GHOST rule, a modification to the way Bitcoin nodes construct and re-organize the block chain, Bitcoin's core distribute data-structure. GHOST has been adopted and a variant of it has been implemented as part of the Ethereum project, a second generation distributed applications platform.},
 author = {Sompolinsky, Yonatan and Zohar, Aviv},
 booktitle = {International Conference on Financial Cryptography and Data Security},
-file = {:D$\backslash$:/research/scalability/scalability/ghost.pdf:pdf},
-keywords = {ghost},
-mendeley-tags = {ghost},
+url={https://www.cs.huji.ac.il/~yoni_sompo/pubs/15/btc_scalability.pdf},
 organization = {Springer},
 pages = {507--527},
 title = {{Secure high-rate transaction processing in bitcoin}},
@@ -36,7 +34,7 @@ year = {2015}
 abstract = {Cryptocurrencies, based on and led by Bitcoin, have shown promise as infrastructure for pseudonymous online payments, cheap remittance, trustless digital asset exchange, and smart contracts. However, Bitcoinderived blockchain protocols have inherent scalability limits that trade off between throughput and latency, which withhold the realization of this potential. This paper presents Bitcoin-NG (Next Generation), a new blockchain protocol designed to scale. Bitcoin-NG is a Byzantine fault tolerant blockchain protocol that is robust to extreme churn and shares the same trust model as Bitcoin. In addition to Bitcoin-NG, we introduce several novel metrics of interest in quantifying the security and efficiency of Bitcoin-like blockchain protocols. We implement Bitcoin-NG and perform large-scale experiments at 15{\%} the size of the operational Bitcoin system, using unchanged clients of both protocols. These experiments demonstrate that Bitcoin-NG scales optimally, with bandwidth limited only by the capacity of the individual nodes and latency limited only by the propagation time of the network.},
 author = {Eyal, Ittay and Gencer, Adem Efe and Sirer, Emin G{\"{u}}n and {Van Renesse}, Robbert},
 booktitle = {NSDI},
-file = {:D$\backslash$:/research/scalability/scalability/bitcoin ng.pdf:pdf},
+url = {https://www.usenix.org/system/files/conference/nsdi16/nsdi16-paper-eyal.pdf},
 keywords = {scalability},
 mendeley-tags = {scalability},
 pages = {45--59},
@@ -59,7 +57,7 @@ abstract = {The Bitcoin cryptocurrency records its transactions in a public log 
 annote = {first paper to introce selfish mining. 25{\%} hash power is enough to do a selfish mining attack},
 author = {Eyal, Ittay and Sirer, Emin G{\"{u}}n},
 booktitle = {International conference on financial cryptography and data security},
-file = {:D$\backslash$:/research/scalability/scalability/selfish mining.pdf:pdf},
+url = {https://arxiv.org/pdf/1311.0243.pdf},
 keywords = {selfish mining},
 mendeley-tags = {selfish mining},
 organization = {Springer},
@@ -71,7 +69,7 @@ year = {2014}
 abstract = {Bitcoin is a decentralized crypto-currency, and an accompanying protocol, created in 2008. Bitcoin nodes continuously generate and propagate blocks—collections of newly approved transactions that are added to Bitcoin's ledger. Block creation requires nodes to invest computational resources, but also carries a reward in the form of bitcoins that are paid to the creator. While the protocol requires nodes to quickly distribute newly created blocks, strong nodes can in fact gain higher payoffs by withholding blocks they create and selectively postponing their publication. The existence of such selfish mining attacks was first reported by Eyal and Sirer [9], who have demonstrated a specific deviation from the standard protocol (a strategy that we name SM1). In this paper we extend the underlying model for selfish mining attacks, and provide an algorithm to find ǫ-optimal policies for attackers within the model, as well as tight upper bounds on the revenue of optimal policies. As a consequence, we are able to provide lower bounds on the computational power an attacker needs in order to benefit from selfish mining. We find that the profit threshold – the minimal fraction of resources required for a profitable attack – is strictly lower than the one induced by the SM1 scheme. Indeed, the policies given by our algorithm dominate SM1, by better regulating attack-withdrawals. Our algorithm can also be used to evaluate protocol modifications that aim to reduce the profitability of selfish mining. We demonstrate this with regard to a suggested countermeasure by Eyal and Sirer, and show that it is slightly less effective than previously conjectured. Next, we gain insight into selfish mining in the presence of communication delays, and show that, under a model that accounts for delays, the profit threshold vanishes, and even small attackers have incentive to occasionally deviate from the protocol. We conclude with observations regarding the combined power of selfish mining and double spending attacks.},
 author = {Sapirshtein, Ayelet and Sompolinsky, Yonatan and Zohar, Aviv},
 booktitle = {International Conference on Financial Cryptography and Data Security},
-file = {:D$\backslash$:/research/scalability/scalability/Optimal Selfish Mining Strategies in Bitcoin.pdf:pdf},
+url = {https://arxiv.org/pdf/1507.06183},
 organization = {Springer},
 pages = {515--532},
 title = {{Optimal selfish mining strategies in bitcoin}},
@@ -125,7 +123,6 @@ abstract = {The increasing popularity of blockchain-based cryptocurrencies has m
 annote = {what to do after changong block interval and block size for scaling blockchain},
 author = {Croman, Kyle and Decker, Christian and Eyal, Ittay and Gencer, Adem Efe and Juels, Ari and Kosba, Ahmed and Miller, Andrew and Saxena, Prateek and Shi, Elaine and Sirer, Emin G{\"{u}}n and Others},
 booktitle = {International Conference on Financial Cryptography and Data Security},
-file = {:D$\backslash$:/research/scalability/scalability/On scaling decentralized blockchains.pdf:pdf},
 organization = {Springer},
 pages = {106--125},
 title = {{On scaling decentralized blockchains}},
@@ -142,10 +139,8 @@ year = {2016}
 @article{Rosenfeld,
 abstract = {Bitcoin is the world's first decentralized digital currency. Its main technical innovation is the use of a blockchain and hash-based proof of work to synchronize transactions and prevent double-spending the currency. While the qualitative nature of this system is well understood, there is widespread confusion about its quantitative aspects and how they relate to attack vectors and their countermeasures. In this paper we take a look at the stochastic processes underlying typical attacks and their resulting probabilities of success.},
 author = {Rosenfeld, Meni},
-file = {:D$\backslash$:/research/scalability/scalability/menirosenfeld.pdf:pdf},
-journal = {arXiv preprint arXiv:1402.2009},
-keywords = {confirmation time},
-mendeley-tags = {confirmation time},
+url = {https://arxiv.org/pdf/1402.2009},
+journal = {arXiv:1402.2009},
 title = {{Analysis of hashrate-based double spending}},
 year = {2014}
 }
@@ -356,7 +351,7 @@ year = {2018}
 }
 @article{spectre,
 abstract = {A growing body of research on Bitcoin and other permissionless cryptocurrencies that utilize Nakamoto's blockchain has shown that they do not easily scale to process a high throughput of transactions, or to quickly approve individual transactions; blocks must be kept small, and their creation rates must be kept low in order to allow nodes to reach consensus securely. As of today, Bitcoin processes a mere 3-7 transactions per second, and transaction confirmation takes at least several minutes. We present SPECTRE, a new protocol for the consensus core of crypto-currencies that remains secure even under high throughput and fast confirmation times. At any throughput, SPECTRE is resilient to attackers with up to 50{\%} of the computational power (up until the limit defined by network congestion and bandwidth constraints). SPECTRE can operate at high block creation rates, which implies that its transactions confirm in mere seconds (limited mostly by the round-trip-time in the network). Key to SPECTRE's achievements is the fact that it satisfies weaker properties than classic consensus requires. In the conventional paradigm, the order between any two transactions must be decided and agreed upon by all non-corrupt nodes. In contrast, SPECTRE only satisfies this with respect to transactions performed by honest users. We observe that in the context of money, two conflicting payments that are published concurrently could only have been created by a dishonest user, hence we can afford to delay the acceptance of such transactions without harming the usability of the system. Our framework formalizes this weaker set of requirements for a crypto-currency's distributed ledger. We then provide a formal proof that SPECTRE satisfies these requirements.},
-author = {Sompolinsky, Yonatan and Lewenberg, Yoad and Zohar, Aviv},
+author = {Sompolinsky, Yonatan; Lewenberg, Yoad; Zohar, Aviv},
 file = {:D$\backslash$:/research/scalability/scalability/spectre.pdf:pdf},
 journal = {IACR Cryptology ePrint Archive},
 pages = {1159},
@@ -647,4 +642,102 @@ annote = {(Accessed on 05/16/2019)},
 title = {VisaNet - The technology behind Visa},
 url = {https://usa.visa.com/dam/VCOM/download/corporate/media/visanet-technology/visa-net-booklet.pdf}
 }
+@misc{btcMarketCap,
+	title={Market capitalization of Bitcoin},
+	author={},
+	year={2019},
+	url={https://coinmarketcap.com/currencies/bitcoin/}
+}
 
+@misc{satoshiComment,
+	title={First use of the term "block chain"},
+	author={Satoshi Nakamoto},
+	year={},
+	url={https://github.com/trottier/original-bitcoin/blob/master/src/main.h#L795-L803}
+}
+
+@article{hashcash,
+  title={Hashcash - a denial of service counter-measure},
+  author={Adam Back},
+  year={2002},
+  url={http://www.hashcash.org/papers/hashcash.pdf}
+}
+
+@article{finneyRPoW,
+	title={Reusable Proofs of Work},
+	author={Hal Finney},
+	year={2004},
+	url={http://web.archive.org/web/20071222072154/http://rpow.net/}
+}
+
+@InProceedings{sybil,
+	author={Douceur, John R.},
+	title={The Sybil Attack},
+	booktitle={Peer-to-Peer Systems},
+	year={2002},
+	pages={251--260},
+	abstract={Large-scale peer-to-peer systems face security threats from faulty or hostile remote computing elements. To resist these threats, many such systems employ redundancy. However, if a single faulty entity can present multiple identities, it can control a substantial fraction of the system, thereby undermining this redundancy. One approach to preventing these ``Sybil attacks'' is to have a trusted agency certify identities. This paper shows that, without a logically centralized authority, Sybil attacks are always possible except under extreme and unrealistic assumptions of resource parity and coordination among entities.},
+	url={https://link.springer.com/chapter/10.1007%2F3-540-45748-8_24}
+}
+
+@misc{cppqt,
+	title={Qt Framework},
+	author={Haavard Nord; Eirik Chambe-Eng; Trolltech; Nokia; Qt Project; Digia; The Qt Company},
+	year={2019},
+	url={https://www.qt.io}
+}
+
+@misc{bitcoinProtocol,
+	title={Protocol documentation - Bitcoin Wiki},
+	author={},
+	year={2019},
+	url={https://en.bitcoin.it/wiki/Protocol_documentation}
+}
+
+@misc{btcREST,
+	title={REST Interface - Bitcoin},
+	author={},
+	year={2019},
+	url={https://github.com/bitcoin/bitcoin/blob/master/doc/REST-interface.md}
+}
+
+@misc{btcRPC,
+	title={RPC Interface - Bitcoin},
+	author={},
+	year={2019},
+	url={https://github.com/bitcoin/bitcoin/blob/master/doc/JSON-RPC-interface.md}
+}
+
+@InProceedings{bitcoinTopology2018,
+	author={Matthias Grundmann; Till Neudecker; Hannes Hartenstein},
+	title={Exploiting Transaction Accumulation and Double Spends for Topology Inference in Bitcoin},
+	booktitle={Financial Cryptography and Data Security},
+	year={2019},
+	publisher={Springer Berlin Heidelberg},
+	pages={113--126},
+	abstract={Bitcoin relies on a peer-to-peer network for communication between participants. Knowledge of the network topology is of scientific interest but can also facilitate attacks on the users' anonymity and the system's availability. We present two approaches for inferring the network topology and evaluate them in simulations and in real-world experiments in the Bitcoin testnet. The first approach exploits the accumulation of multiple transactions before their announcement to other peers. Despite the general feasibility of the approach, simulation and experimental results indicate a low inference quality. The second approach exploits the fact that double spending transactions are dropped by clients. Experimental results show that inferring the neighbors of a specific peer is possible with a precision of 71\% and a recall of 87\% at low cost.},
+	url={https://link.springer.com/chapter/10.1007/978-3-662-58820-8_9}
+}
+
+@InProceedings{networkX,
+	author={Aric A. Hagberg; Daniel A. Schult; Pieter J. Swart},
+	title={Exploring network structure, dynamics, and function using NetworkX},
+	year={2008},
+	pages={11-15},
+	booktitle={Python in Science Conference (SciPy2008)},
+	url={https://networkx.github.io/documentation/stable/index.html}
+}
+
+@misc{jmeter,
+	title={Apache JMeter},
+	author={The Apache Software Foundation},
+	year={2019},
+	url={https://jmeter.apache.org/}
+}
+
+@misc{jmeterDistributed,
+	title={Distributed Testing - Apache JMeter},
+	author={The Apache Software Foundation},
+	year={2019},
+	url={https://jmeter.apache.org/usermanual/jmeter_distributed_testing_step_by_step.html}
+}

@@ -200,7 +200,7 @@
 \RequirePackage{booktabs} % Required for better table rules
 
 \RequirePackage{caption} % Required for customising the captions
-\captionsetup{justification=centerlast,font=small,labelfont=sc,margin=50pt}
+\captionsetup{justification=centerlast,font=small,labelfont=sc,margin=35pt}
 
 %----------------------------------------------------------------------------------------
 %	DEFINE CUSTOM THESIS INFORMATION COMMANDS
@@ -335,6 +335,11 @@ KOMA-script documentation for details.}]{fancyhdr}
 	\ifbool{nolistspace}{\endgroup}{}
 }
 
+% https://tex.stackexchange.com/questions/212263/month-year-format-in-latex
+\usepackage{datetime}
+\newdateformat{monthyeardate}{%
+  \monthname[\THEMONTH], \THEYEAR}
+
 %=============================================================================
 % CERTIFICATE SHEET
 % - start a new page. page 
@@ -351,7 +356,7 @@ KOMA-script documentation for details.}]{fancyhdr}
 	\bigskip
 	\bigskip
 	
-	It is certified that the work contained in the thesis titled
+	% It is certified that the work contained in the thesis titled
 	This is to certify that the thesis titled \textbf{\@title}, 
 	being submitted by \textbf{\@author}, 
 	is a record of bona fide work carried out by him under my guidance and supervision.
@@ -365,7 +370,7 @@ KOMA-script documentation for details.}]{fancyhdr}
     \end{flushright}
 
     \begin{flushleft}
-    \@date
+    \monthyeardate\today
     \end{flushleft}
 }
 
@@ -389,7 +394,7 @@ KOMA-script documentation for details.}]{fancyhdr}
 	}%
 	{}%end alt-abstract
 }{%
-	\DeclareDocumentEnvironment{abstract}{ O{\null\vfill} }{
+	\DeclareDocumentEnvironment{abstract}{ O{} }{
 		\checktoopen
 		\tttypeout{\abstractname}
 		#1%added to be able to have abstract more than one page long
@@ -410,9 +415,7 @@ KOMA-script documentation for details.}]{fancyhdr}
 			\bigskip
 		\end{center}
 	}
-	{
-		\vfill\null
-	}
+	{}
 }
 
 \DeclareDocumentEnvironment{extraAbstract}{ O{\null\vfill} }{
@@ -559,9 +562,9 @@ bookmarksopen=true,
 bookmarksopenlevel=0,
 hypertexnames=false,
 colorlinks=true, % Set to false to disable coloring links
-citecolor=magenta, % The color of citations
-linkcolor=blue, % The color of references to document elements (sections, figures, etc)
-urlcolor=mdtBlue, % The color of hyperlinks (URLs)
+citecolor=black, % The color of citations
+linkcolor=black, % The color of references to document elements (sections, figures, etc)
+urlcolor=black, % The color of hyperlinks (URLs)
 pdfstartview={FitV},
 unicode,
 breaklinks=true,

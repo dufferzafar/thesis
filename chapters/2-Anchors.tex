@@ -1,7 +1,9 @@
 \chapter{Anchors} \label{ch-anchors}
 
-In this chapter, we describe the the key contribution of this thesis - Anchors. We begin with their structure and then discuss their lifecycle - how they're generated, propagated and processed. 
-We also list down some properties that Anchors have, which make them well suited to solve the problems listed in the last section (\ref{intro-problems}).
+In this chapter, we describe the the key contribution of this thesis - Anchors. 
+We begin with their structure and then discuss their lifecycle - how they're generated, propagated and processed (sections \ref{anc-structure} and \ref{anc-lifecycle}). 
+We also describe some properties that Anchors have, which make them well suited to solve the problems listed in the last section (\ref{intro-problems}).
+In section \ref{anc-benefits} we list some of the benefits that Anchors provide which are later backed by the experimental results in chapter \ref{ch-results}.
 
 %----------------------------------------------------------------------------------------
 
@@ -20,7 +22,7 @@ This can be done the same way as Bitcoin - by including a Coinbase transaction t
 \paragraph{Note: } Do note that Anchors contain no other information, specifically, no other transactions. 
 So they have a considerably smaller body when compared to Bitcoin blocks.
 
-\info{Draw diagrams: block / anchor structure}
+% \info{Draw diagrams: block / anchor structure}
 
 In our implementation (see Chapter \ref{ch-impl}) an Anchor is identical to an empty Bitcoin block - one that contains no transactions apart from the Coinbase.
 Since anchors contain PoW, they (like blocks) also contribute weight to the chain they belong to.
@@ -29,7 +31,7 @@ Since anchors contain PoW, they (like blocks) also contribute weight to the chai
 % If the content turns out to be smaller than the paper
 % then we don't even have to create a separate section?
 
-\section{Lifecycle}
+\section{Lifecycle} \label{anc-lifecycle}
 
 \subsection{Generation} \label{anc-gen}
 
@@ -46,7 +48,7 @@ Since anchors contain PoW, they (like blocks) also contribute weight to the chai
 \end{figure}
 
 An Anchor is generated akin to a block but on a larger \& non-overlapping as shown in Figure \ref{fig-targets}.
-This is similar to the 2-for-1 PoW technique used in \cite{backboneprotocol, fruitchain, prism}.
+% This is similar to the 2-for-1 PoW technique used in \cite{backboneprotocol, fruitchain, prism}.
 A miner, when mining for a block checks for each nonce value in the header, if he has found a valid block.
 In case this isn't, the same solution can then be checked to see if it is valid anchor, in which case the miner publishes the anchor (along with the coinbase and a merkle path of the coinbase to the root of the tree.) 
 {\em This method ensures that no additional effort is needed for mining an anchor}. 

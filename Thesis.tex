@@ -1,6 +1,6 @@
 \documentclass[
 12pt, % The default document font size, options: 10pt, 11pt, 12pt
-%oneside, % Two side (alternating margins) for binding by default, uncomment to switch to one side
+% oneside, % Two side (alternating margins) for binding by default, uncomment to switch to one side
 english, 
 onehalfspacing, % Single line spacing, alternatives: onehalfspacing or doublespacing
 % draft, % Uncomment to enable draft mode (no pictures, no links, overfull hboxes indicated)
@@ -19,12 +19,19 @@ headsepline, % Uncomment to get a line under the header
 \usepackage{scrextend}
 %\changefontsizes[14pt]{14pt}
 
+% To include the City Pings table
+% which was printed as a PDF via Google Sheets
+% \usepackage{pdfpages}
+
 \usepackage{palatino}
 \usepackage{url}
 
+% https://tex.stackexchange.com/questions/54055/using-lower-case-roman-numerals-in-enumerate-lists
+\usepackage{enumerate}
+
 % \usepackage{natbib}
 % \bibliographystyle{unsrtnat}
-\usepackage[backend=bibtex,citestyle=numeric,natbib=true]{biblatex}
+\usepackage[backend=bibtex,citestyle=numeric,natbib=true,sorting=none]{biblatex}
 \addbibresource{References.bib}
 
 \usepackage[autostyle=true]{csquotes}
@@ -40,19 +47,23 @@ headsepline, % Uncomment to get a line under the header
 
 % https://www.overleaf.com/learn/latex/Code_Highlighting_with_minted
 \usepackage{minted}
-% \setminted{fontsize=\footnotesize,baselinestretch=1}
-\setminted{fontsize=\footnotesize,baselinestretch=1,linenos,frame=single,framesep=10pt}
-
-% https://tex.stackexchange.com/questions/112559/box-around-minted-environment
-% \usepackage{tcolorbox}
-% \usepackage{etoolbox}
-% \BeforeBeginEnvironment{minted}{\begin{tcolorbox}}%
-% \AfterEndEnvironment{minted}{\end{tcolorbox}}%
+\setminted{fontsize=\footnotesize,baselinestretch=1,linenos,frame=lines,framesep=10pt}
 
 % Figures directory is located in the root
 \graphicspath{ {./figures/} }
 
 \usepackage{titlesec}
+
+% https://tex.stackexchange.com/questions/45817/theorem-definition-lemma-problem-numbering
+% \usepackage{amsthm}
+% \theoremstyle{definition}
+% \newtheorem{defn}[thm]{Definition}
+
+% https://tex.stackexchange.com/questions/89354/forcing-math-mode-to-be-on-the-same-line
+% \binoppenalty=3000
+% \relpenalty=3000
+
+\usepackage{fixltx2e}
 
 %----------------------------------------------------------------------------------------
 %	MARGIN SETTINGS
@@ -72,8 +83,9 @@ headsepline, % Uncomment to get a line under the header
 %	THESIS INFORMATION
 %----------------------------------------------------------------------------------------
 
-\thesistitle{Fast Stabilization of PoW Blockchains}
-\supervisor{Prof. Vinay Riebero}
+% \thesistitle{Fast Stabilization of PoW Blockchains}
+\thesistitle{Improving security \& performance of PoW Blockchains using Anchors}
+\supervisor{Prof. Vinay J. Ribeiro}
 \degree{Master of Technology}
 \author{Shadab Zafar}
 \addresses{}
@@ -83,7 +95,8 @@ headsepline, % Uncomment to get a line under the header
 
 \university{IIT Delhi}
 \department{Department of Computer Science and Engineering}
-\faculty{Prof. Vinay Riebero}
+\faculty{Prof. Vinay J. Ribeiro}
+
 \begin{document}
 
 \frontmatter
@@ -128,7 +141,7 @@ headsepline, % Uncomment to get a line under the header
 	\textit{in the}\\[0.4cm]
 	\deptname\\[1cm]
 
-	{\large \today}
+	{\large \monthyeardate\today}
 
 \end{center}
 \end{titlepage}
@@ -142,16 +155,17 @@ headsepline, % Uncomment to get a line under the header
 \begin{abstract}
 \addchaptertocentry{\abstractname}
 
-% After having been invented in 2008 by 
-After their first public use in 2008 by the pseudonymous Satoshi Nakamoto, Blockchains have taken the world by storm.
-Though they were first used as a cryptocurrency, Blockchains have continued to disrupt other sectors.
-Even though new algorithms have been proposed for consensus, Proof-of-Work continues to be the... 
-The growing popularity has also shed light on some of the drawbacks that the current PoW Blockchains suffer from
+After their first public use in Bitcoin, Blockchains have taken the world by storm.
+Even though research has been done on alternative forms of consensus schemes and new algorithms have been proposed, Proof-of-Work (PoW) is still the most widely used approach.
+This popularity has also shed light on some of the drawbacks that the current PoW Blockchains suffer from.
+Since PoW consensus generates blocks at random time instants, the weight of the chain increases in an unsteady manner
+which leads to forks, increased chance of double-spend and selfish mining attacks.
+It also results in systems with low performance as the confirmation times increase and throughput decreases.
 
-In this thesis we present a new signalling mechanism (called Anchors) that 
-We implement Anchors in the reference implementation of Bitcoin (the most widely used PoW Blockchain)
-We also create a testbed that allows running Bitcoin experiments and use it to evaluate our implementation of Anchors. 
-Comparing the results with the original Bitcoin we find that ...
+In this thesis, we present a new signalling mechanism (called Anchors) which aid in improving the security and performance of PoW blockchains, while adding minimal overhead to the system.
+We implement Anchors in the reference implementation of Bitcoin (the most widely used PoW Blockchain) as a proof of concept.
+We also create a testbed that allows running Bitcoin experiments and use it to evaluate our implementation of Anchors on a network of 114 Bitcoin nodes. 
+Comparing the results with unmodified Bitcoin we find that anchors propagate much faster than blocks, aiding in quicker fork resolution times (and even preveing some forks from occurring), without adversely impacting block propagation times.
 
 \end{abstract}
 
@@ -161,10 +175,10 @@ Comparing the results with the original Bitcoin we find that ...
 
 \begin{acknowledgements}
 \addchaptertocentry{\acknowledgementname}
-First and foremost, I'd like to thank \supname, without whose guidance and supervision this work would not have been possible.
+First, I'd like to thank \supname, without whose guidance and supervision this work would not have been possible.
 Next, I'd like to thank my co-authors and lab-mates Ovia Seshadri and Aditya Kumar for discussing the finer details of the projects and helping me whenever I was stuck.
 
-This work would've moved considerably slowly had it not been for the helpful folks in the Bitcoin community.
+This work would've moved considerably slowly had it not been for the helpful folks in the Bitcoin community (Slack, IRC, StackOverflow, Reddit etc.)
 I've received help from many people, but I'd specially like to thank Gregory Maxwell and Luke Dashjr for taking time out of their lives and helping me figure out the peculiarities of the Bitcoin Core client.
 \end{acknowledgements}
 
@@ -213,6 +227,8 @@ I've received help from many people, but I'd specially like to thank Gregory Max
 
 % \bibliography{References}
 \printbibliography[heading=bibintoc]
+
+% \fixme{Add URLs to every ref, so page count increases!}
 
 %----------------------------------------------------------------------------------------
 

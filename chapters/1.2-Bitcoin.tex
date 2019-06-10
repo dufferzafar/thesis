@@ -1,25 +1,59 @@
 %----------------------------------------------------------------------------------------
+\paragraph{Note: }
+In this Thesis, we restrict ourselves to Blockchains that use Proof-of-Work as their consensus algorithm. 
+Bitcoin, explained in the next section, is the largest publically deployed blockchain and uses PoW.
 
-\newpage
 \section{Bitcoin} \label{intro-bitcoin}
 
-Bitcoin is a digital currency (also called crypto-currency) that was first proposed by the pseudonymous \footnote{It is unknown whether Satoshi is a person or a group of persons. Multiple people have tried to present "proof" that they're indeed Satoshi but there is still doubt.} "Satoshi Nakamoto" \cite{bitcoinOriginal}. 
+Bitcoin is a digital currency (also called cryptocurrency) that was first proposed by the pseudonymous \footnote{It is unknown whether Satoshi is a person or a group of persons. Multiple people have tried to present "proof" that they're indeed Satoshi but there is still doubt.} "Satoshi Nakamoto". 
+Satoshi self-published the Bitcoin whitepaper in 2008 \cite{bitcoinOriginal} and soon after, on January 3rd, 2009, the genesis block of the main Bitcoin blockchain \footnote{Satoshi seemed to prefer "block chain" over "blockchain" as shown by their comment in the original source code. \cite{satoshiComment}} was created.
 
-Full node.
+Although the technical primitives (cryptographic hash functions, asymmetric cryptography) have existed for a while, 
+Bitcoin was the first concept to combine these building blocks with an incentive system (mining rewards), thereby creating the first distributed cryptocurrency and it is by far the most successful one in terms of market capitalization reaching a peak value of 320 billion USD in Nov 2017 \cite{btcMarketCap}. 
 
-Form a Bitcoin network. The network is responsible for maintains 
+% Addresses, transactions, and blocks are the three basic data structures used in Bitcoin. 
 
 %----------------------------------------------------------------------------------------
 
-\newpage
 \subsection{Proof-of-Work Consensus} \label{btc-pow}
 
-Proof of Work is one of the mechanisms used by a Blockchain system to achieve consensus on the set of records (transactions in case of a Digital Ledger) that are considered valid. 
+At the heart of Bitcoin lies it's ingenious proof-of-work based consensus scheme (also called "Nakamoto Consensus").
+A proof-of-work (PoW) in general enables a prover to provide evidence to a verifier that the prover has invested computational resources (CPU, memory etc.) into a task.
+The idea of performing and providing a PoW for security reasons was developed and refined by Hal Finney, Adam Back and others \cite{hashcash, finneyRPoW}
 
-\begin{itemize}
-    \item 1 cpu 1 vote
-    \item Nakamoto consensus?
-\end{itemize}
+In Bitcoin, a new block is only accepted to the blockchain if it contains a valid PoW.
+Each new block points to an older one and can be seen as adding weight to that chain.
+Honest nodes agree that at any point in time only the longest blockchain is considered valid. 
+In practice, this is implemented as the "heaviest chain rule" - the chain having the most weight as it has been the hardest to compute.
+
+PoW as used in Bitcoin is based on a partial pre-image attack on the cryptographic hash function SHA-256. 
+This process can be seen as trying to solve a computational puzzle to find a block header (and an extra nonce value) that satisfy the relation: 
+% \textit{ SHA\-256(SHA\-256(block\_header)) \leq T }
+\mathchardef\mhyphen="2D
+
+$$ SHA{\text -}256(SHA{\text -}256(block\_header)) \leq T $$
+
+where T is the target space of valid solutions. 
+% The higher the number T, the lower the number of possible solutions, resulting in the PoW being harder to find. 
+
+In practice this may mean something like 'all blocks whose hashes begin with 69 zeroes are considered valid'.
+
+% This process can be described as a “random leader election” where a leader is allowed to propose a new block and implicitly agrees on all blocks before that by appending its new block to the end of the respective blockchain
+
+Proof-of-Work is based on the idea of 1-CPU-1-Vote and acts as a defense mechanism against "Sybil attacks" - where an attacker might create fake identities and gain a large influence on the network. \cite{sybil}
+
+\subsection{Mining} \label{btc-mining}
+
+Mining is the process of looking for a valid Block by performing PoW and reaching consensus on the current state of the blockchain. 
+The nodes that are actively involved in searching for these solutions called \textit{miners}. 
+They are rewarded with units of the "mined" cryptocurrency (bitcoins) as a compensation for investing computational power into the overall security of the cryptocurrency. 
+Bitcoin is a prime example of \textit{permissionless} system, where anybody is allowed to connect to Bitcoin's peer-to-peer network and participate in the maintainance of the chain.
+Miners can join or leave the network at any time, increasing or lowering the mining power. 
+As the mining power changes, the hardness of the puzzle needs to be adjusted to ensure that new blocks are generated at regular intervals (which is 10 mintes for Bitcoin). 
+
+While miners compete with each other for the mining reward, the Bitcoin network also has other nodes like a \textit{full node} - which might not be mining, but still contributes by forwarding the messages, storing a full copy of the blockchain \footnote{The current chain over 200 GBs in size \cite{bitcoinDownload}.} and participating in the consensus protocol.
+% Nodes (in the Bitcoin network) that take part in generation of new blocks are called \textit{Miners}. 
+% They compete with other miners who are also looking for valid blocks and 
 
 %----------------------------------------------------------------------------------------
 
@@ -41,9 +75,9 @@ Bitcoin Core includes four clients, three of which are command line-based:
 
     \item \textit{bitcoin-cli} - once the daemon is running in background, this application acts as an interface for controlling the daemon's behaviour. It works by sending appropriate RPC commands to the daemon.
 
-    \item \textit{bitcoin-tx} - 
+    \item \textit{bitcoin-tx} - this application provides a low-level interface for creating transactions (using the "raw transactions API" discussed in section \ref{impl-txns-raw})
 
-    \item \textit{bitcoin-qt} - this GUI based application acts as a frontend 
+    \item \textit{bitcoin-qt} - this GUI based application acts as a user-friendly frontend for the bitcoin daemon. The application has been written using the Qt UI Framework \cite{cppqt}.
 \end{itemize}
 
 The source repository also includes functional and unit-tests for the Core source code.
@@ -55,33 +89,54 @@ We now give some details on the design of Bitcoin Core:
 The Bitcoin daemon can be run in three modes which differ in the blockchain they maintain and the consensus parameters they use:
 
 \begin{itemize}
-    \item \textbf{Mainnet} - This is the default mode of operation, where the daemon 
-    \item \textbf{Testnet} - 
-    \item \textbf{Regtest} - 
+    \item \textbf{Mainnet} - This is the default mode of operation, where the daemon connects to other nodes in the network and downloads the main Bitcoin blockchain acting as a full node by participating in the consensus protocol - verifying blocks and transactions.
+
+    \item \textbf{Testnet} - The testnet is an alternative Bitcoin block chain, which is used for testing. 
+    Testnet coins are separate and distinct from actual bitcoins, and are never supposed to have any value. 
+    This allows application developers run experiments without having to use real bitcoins.
+
+    \item \textbf{Regtest} - The regression test mode runs a local-only daemon which does not connect to any other node by default. 
+    Furthermore, the consensus parameters for this mode are set such that blocks can be generated instantly (skipping any proof-of-work).
+    This is meant for Bitcoin developers to test their code locally.
 \end{itemize}
 
-\subsubsection{Protocols} \label{btc-interfaces}
+Testnet and Regtest modes are run by passing \textit{-testnet} or \textit{-regtest} parameters to the bitcoin daemon.
+In our experimentation testbed, we used the regtest mode of Bitcoin since we wanted to avoid performing proof-of-work computation and run a private network of nodes.
 
-A running Bitcoin daemon has support for three protocols, each of which serves a distinct purpose.
+\subsubsection{Protocol Interfaces} \label{btc-interfaces}
+
+A running Bitcoin daemon has support for three protocols, each of which serves a distinct purpose and are exposed on a different TCP port as depicted in Figure \ref{fig-btc-arch}.
 
 \begin{itemize}
-    \item \textbf{Bitcoin Protocol} - This is the protocol that a Bitcoin node uses to send or receive data from other nodes in the Bitcoin network. This custom networking protocol is built upon TCP.
-    %  and uses various message types 
+    \item \textbf{Bitcoin Protocol} - This is the protocol that a Bitcoin node uses to send or receive data from other nodes in the Bitcoin network. It is a custom networking protocol built upon TCP, having its own message structures and types. \cite{bitcoinProtocol}
+    Some messages of the protocol are: \textit{block}, \textit{tx}, \textit{addr} - each of which contain objects of a specific type.
 
-    \item \textbf{HTTP REST API} - 
+    \item \textbf{REST API} - For clients that want to query the chain information, Bitcoin provides an unauthenticated REST API based on HTTP. \cite{btcREST} 
+    The API allows using binary, hexadecimal and JSON (which is human readable) formats for accessing the data.
+    This API is read-only, in that it can be used to read data like blocks and their contents, but can not be used to modify the blockchain state.
 
-    \item \textbf{RPC API} - The Remote Procedure Call (RPC) interface of a Bitcoin node can be used by other clients to send commands to it that control the behaviour of the node.
-    This interface can be password protected so only authorised users can send commands.
+    \item \textbf{RPC API} - The Remote Procedure Call (RPC) interface of a Bitcoin node can be used by other clients to send commands to it that control the behaviour of the node. \cite{btcRPC}
+    This interface is more powerful than the REST API since apart from allowing users to read data from the chain, it also allows them to mutate the chain's state. For eg. by making the \textit{generateblock} call which creates a new block.
+    Both requests and responses from this interface are in the JSON format.
+    The interface can be password protected so only authorised users can send the commands.
 \end{itemize}
 
+\newpage
+
+% Figure \ref{fig-btc-arch} depicts the interfaces used.
+
+\hspace{0pt}
+\vfill
 \begin{figure}[!htb]
     \centering
-    \includegraphics[width=\textwidth]{"Bitcoin Protocols".pdf}
-    \caption[Protocol interfaces used by Bitcoin Core.]
+    \includegraphics[width=\textwidth]{"Protocol Interfaces".pdf}
+    \caption[Protocol interfaces exposed by Bitcoin Core.]
     {
-        Protocol interfaces used by Bitcoin Core. \\
+        Protocol interfaces exposed by Bitcoin Core. \\
         \footnotesize
-        \textit{bitcoin-cli} can only use the RPC API to send commands, while a Python script can use either 
+        \textit{bitcoin-cli} can only use the RPC API to send commands, while a Python script can use either of RPC or REST.
     }
     \label{fig-btc-arch}
 \end{figure}
+\vfill
+\hspace{0pt}

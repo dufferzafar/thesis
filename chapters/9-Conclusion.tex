@@ -1,3 +1,20 @@
 \chapter{Conclusion \& Future Work} \label{ch-conclusion}
 
-\fixme{Look at how other papers deal with the endings}
+We presented a new signaling scheme (called Anchors) that gives early insight to miners about the true hashing power division in the network.
+% With a successful proof of concept implementation we demonstrated that our basic premise of low latencies for anchors compared to blocks is true and that anchors resolve forks quickly thereby maintaining chain stability. 
+We created a proof of concept implementation of Anchors in the reference Bitcoin client (Bitcoin Core).
+After benchmarking unmodified Bitcoin against a variety of configurations of Bitcoin with Anchor support, we can conclude that Anchors are successful in making Bitcoin more robust, reducing fork resolution times and preventing forks altogether, without any substantial downsides to the system at large. 
+% This is possible with minimal changes to the Bitcoin protocol, as shown by the proof-of-concept support of Anchors added to the Bitcoin reference implementation. 
+% The addition of Anchors as implemented is also a soft fork (is it? I remember some controversy about this), which means that a smooth rollout is possible without disruption of services.
+
+However, work on Anchors is far from complete. 
+Currently, our implementation of Anchors does not consider rewards, which is a critical component if this proof-of-concept needs to be deployed in the real-world.
+Adding rewards might mean that we deviate from the current Bitcoin block structure, in which case, we might want to look at methods that could work as a "soft-fork" into Bitcoin.
+% means that miners have no incentive to use Anchors.
+As new information about the exact topology of Bitcoin's overlay network becomes available, it could be integrated into the testbed to bring the emulation closer to the real world system.
+
+% Further, this thesis shows experiments conducted across a variety of $a$ values as a testament of the flexibility of Anchors, but does not present any work on the calculation on an ideal value of $a$ which maximises fork resolution and fork prevention while simultaneously minimizing Anchor and Block propagation times. 
+% Calculation of the ideal chain weight contribution of an Anchor (and possible half-life) also remains to be investigated.
+
+We implemented Anchors in Bitcoin because it is the most widely deployed PoW blockchain, but in theory, Anchors could also be incorporated in blockchains using the GHOST protocol \cite{GHOST}, or Ethereum \cite{EthereumOriginal} and give similar benefits.
+We could also experiment with implementing selfish-mining \cite{selfishmining} in Bitcoin Core and then testing whether Anchors have the potential to mitigate such attacks.

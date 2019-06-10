@@ -1,6 +1,8 @@
 \chapter{Experimental Evaluation} \label{ch-exp}
 
-In this chapter, we describe the evaluation of our implementation of a Bitcoin system which includes Anchors. We benchmark this implementation against unmodified Bitcoin in a set of experiments. We begin by outlining the setup we used - configuration of the machines and the topology used to connect them into a single network and then move on to describing the experiments we performed.
+In this chapter, we describe the evaluation of our implementation of a Bitcoin system which includes Anchors. 
+We begin by outlining the setup we used (section \ref{exp-setup}) - configuration of the machines and the topology used to connect them into a single network 
+and then move on to describing the experiments we performed (section \ref{exp-exp}).
 
 %----------------------------------------------------------------------------------------
 
@@ -25,20 +27,21 @@ We reserved one machine for running only the Master program while the other nine
 
 \subsection{Network Topology} \label{exp-setup-topology}
 
-As explained in section \fixme{ref} we ran the Bitcoin nodes in \textit{regtest} mode. In this mode, the nodes do not automatically search for their peers, and have to be manually connected into a topology. We use the \textit{addnode} RPC to create a bi-directional connection between two Bitcoin nodes. Since the links are symmetrical, the RPC can be sent to either of the two nodes. 
+As explained in section \ref{btc-modes} we ran the Bitcoin nodes in \textit{regtest} mode. In this mode, the nodes do not automatically search for their peers, and have to be manually connected into a topology. We use the \textit{addnode} RPC to create a bi-directional connection between two Bitcoin nodes. Since the links are symmetrical, the RPC can be sent to either of the two nodes. 
 
 The structure of Bitcoin's topology is complicated, and is intentionally hidden to prevent denial of service (DoS) attacks and maintain the privacy of nodes. 
 There are two main RPCs that provide network related information \textit{getnetworkinfo} and \textit{getpeerinfo}, but they do not reveal the immediate neighbors, but do provide a superset of nodes that they have discovered. 
 The latency among the nodes is also unknown. 
 
-There has been some previous research \cite{eclipseAttack}, \cite{coinscope} that shed light on some of the details of Bitcoin's topology, like the fact that degrees of nodes can be approximated by a power-law distribution. The approach used by this work was patched in this version. \fixme{ref another paper on topo - by sir 2018?} 
-Though there have been other approaches \fixme{find more refs} that tried to reveal more information about the topology, we are not aware of any detailed work that offers significant insight into the Bitcoin main network.
+There has been some previous research that shed light on some of the details of Bitcoin's topology \cite{coinscope}, like the fact that degrees of nodes can be approximated by a power-law distribution. The approach used by this work was patched in this version. 
+Though there have been other approaches \cite{bitcoinTopology2018} that tried to reveal more information about the topology, we are not aware of any detailed work that offers significant insight into the Bitcoin main network.
 
 Similar to other past work \cite{bitcoinNG} that emulated Bitcoin in experimental settings, we construct a network where each node is connected to 5 other nodes chosen at random.
 
 Previous work \cite{btcmap} has found that the Bitcoin's main network is connected, so each node can reach all others. 
-We ensure that that our generated topology is connected by checking that the network graph has a single connected component.
-We used a Python module called \textit{networkx} for doing the check. \fixme{ref?}
+We too ensure that that our generated topology is connected by checking that the network graph has a single connected component.
+We also computed the diameter of our network of 114 nodes to see the maximum number of hops it took for messages from one node to reach another node. We found the diameter varied between 3 and 5.
+We used a Python module called \textit{networkx} \cite{networkX} for performing both the connected components check and computing the diameter. 
 
 \subsection{Network Latencies} \label{exp-setup-latencies}
 
@@ -113,7 +116,7 @@ for source_vm in all_VMs:
 \newpage
 \subsection{Network Time Synchronization} \label{exp-setup-ntp}
 
-Network Time Protocol (NTP) is ... \fixme{continue}
+Network Time Protocol (NTP) is client server based networking protocol used to synchronize clocks between computer systems.
 
 Since most of our experiments deal with time calculations, it was critical that we don't let clock drift affect the results. 
 To ensure this, we let the default NTP client provided by Ubuntu run on all nodes which were setup to synchronize the time using IIT Delhi's internal NTP server \cite{iitdNTP}.
@@ -124,7 +127,9 @@ To ensure this, we let the default NTP client provided by Ubuntu run on all node
 
 \section{Experiments} \label{exp-exp}
 
-In this section we describe the experiments that we performed on our testbed to compare Unmodified Bitcoin with a Bitcoin system that also includes Anchors.
+In this section we describe the experiments that we performed on our testbed to compare unmodified Bitcoin with a Bitcoin system that also includes Anchors.
+
+% We benchmarked this implementation against unmodified Bitcoin in a set of experiments. 
 
 %----------------------------------------------------------------------------------------
 
@@ -135,9 +140,10 @@ Propagation time of a message is the difference between the time it is broadcast
 Since an Anchor is considerably smaller than a Block, we expect it to propagate faster throughout the network thereby acting as a signalling mechanism for the true mining power in the network.
 
 Each Bitcoin node logs the time when a Block or an Anchor is generated and when it is received. 
-For each Block (or Anchor) we compute the difference between the time it was generated a node and when it was received at all other nodes. The maximum of these values is the total time taken by the Block (or Anchor) to propagate throughout the network.
-
-\fixme{Taking max results in outliers, so 95 percentile?}
+For each Block (or Anchor) we compute the difference between the time it was generated a node and when it was received at all other nodes. 
+The maximum of these values is the total time taken by the Block (or Anchor) to propagate throughout the network.
+We observed that taking the maximum value results in outliers, as some nodes always lag behind the others.
+To prevent the actual results being lost in outliers, we took 95 percentile values for propagation times.
 
 % Propagation time of a message is the difference between the time of its broadcast at the source node and the time of its arrival at the destination. To remove extraneous outliers, we calculate the 95th percentile of propagation times.
 
@@ -145,10 +151,24 @@ For each Block (or Anchor) we compute the difference between the time it was gen
 
 \subsection{Resolution Time of Forks} \label{exp-fork}
 
-As explained in Section \fixme{ref} Forks are a problem in a blockchain system as they reduce security and waste computation. 
-Consider the scenario of a blockchain in the absence of Anchors. After a fork occurs, the weight of the chain remains constant in the interval between the time of creation of the fork and the arrival of the next block on any of the two branches. So the fork lasts for one block interval time, which can be substantial as for Bitcoin (10 minutes). While, in a blockchain system with Anchors, forks can be resolved by the first arriving Anchor. 
+As explained in Section \ref{intro-problems} Forks are a problem in a blockchain system as they reduce security and waste computation.
+Consider the scenario of a blockchain in the absence of Anchors. After a fork occurs, the weight of the chain remains constant in the interval between the time of creation of the fork and the arrival of the next block on any of the two branches. So the fork lasts for one block interval time, which can be substantial as for Bitcoin (10 minutes). 
+While, in a blockchain system with Anchors, forks can be resolved by the first arriving Anchor. 
 
-Figure \fixme{ref} depicts this scenario, where a fork is caused by Block  and occurs at time . \fixme{continue}
+
+\begin{figure}[!htb]
+    \centering
+    \includegraphics[width=0.8\textwidth]{"Fork Resolution".pdf}
+    \caption{Fork Resolution in a Blockchain}
+    % \caption[Fork Resolution in a Blockchain]{
+    %     Fork Resolution in a Blockchain.\\
+    %     \footnotesize
+        
+    % }
+    \label{diag-fork-resolution}
+\end{figure}
+
+Figure \ref{diag-fork-resolution} depicts a scenario where a fork is caused by Block B\textsubscript{2} and occurs at time T\textsubscript{0} + 5. In a system without Anchors, the fork would be resolved at time T\textsubscript{0} + 9 with the arrival of Block B\textsubscript{3}, whereas in a system with Anchors, the fork would be resolved earlier - at time T\textsubscript{0} + 6 with the arrival of Anchor A\textsubscript{1}.
 
 Resolution time of forks (RTF) is calculated by every miner as the difference between the time a fork was realized on its chain and the time at which the next block or anchor increased the chain weight on one of the branches of the fork, effectively resolving the fork. We then compute the mean RTF value of all forks that occur during the experiment.
 
@@ -156,12 +176,31 @@ In Bitcoin, the block interval time is set particularly high to make forks rare 
 We are interested in finding the average resolution time for each fork across all nodes, and the branch of the fork they choose locally to continue mining on. 
 Therefore, in order to get good statistical estimates in short experimental runs, we scale down the block interval of Bitcoin from 600 seconds to 30 seconds, so that a small number of natural forks occur based only on network delays.
 
+Apart from Fork resolution times, we also keep track of the chain that a fork eventually gets resolved to. 
+So for eg. in Figure \ref{diag-fork-resolution}, as one miner resolves the fork in favour of the branch containing Block B\textsubscript{1}, we track what percent of nodes of the network also resolve in favour of this branch.
+This is useful as ideally we would want the entire network to switch to the same branch with the presence of Anchors.
+
 %----------------------------------------------------------------------------------------
 
+\newpage
 \subsection{Forks Prevented} \label{exp-forks-prevented}
 
 With the introduction of Anchors, there can be scenarios where a fork is prevented from happening. This happens when an anchor arrives on a block earlier than a sibling block that would otherwise create a fork in the chain and the anchor prevents the fork before it could even occur.
 
-Figure \fixme{ref} explains the situtation. 
+\begin{figure}[!htb]
+    \centering
+    \includegraphics[width=0.8\textwidth]{"Fork Prevention".pdf}
+    \caption{Fork Prevention in a Blockchain with Anchors}
+    % \caption[Fork Resolution in a Blockchain]{
+    %     Fork Resolution in a Blockchain.\\
+    %     \footnotesize
+        
+    % }
+    \label{diag-fork-prevention}
+\end{figure}
 
-% With a system that includes 
+
+Figure \ref{diag-fork-prevention} depicts such a situtation, where A fork would've been caused by Block B\textsubscript{2} but since Anchor A\textsubscript{1} arrives before B\textsubscript{2} the fork never occurs as the chain having A\textsubscript{1} is still heavier than the other one.
+% - at time T\textsubscript{0} + 6 with the arrival of Anchor A\textsubscript{1}.
+
+To compute results, we count for each fork that occurs, the number of nodes that it gets prevented on.

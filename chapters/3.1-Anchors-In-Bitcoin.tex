@@ -1,6 +1,11 @@
 
 \chapter{Implementation} \label{ch-impl}
 
+This chapter begins with the exact steps required to building Bitcoin Core
+and then describes two central contributions of this thesis: 
+(i) integration of Anchors in Bitcoin Core (section \ref{impl-anchors}) and 
+(ii) implementation of a testbed that can be used to run experiments (section \ref{impl-testbed}).
+
 \section{Building Bitcoin Core} \label{impl-btc-compile}
 
 As mentioned before, the reference implementation of Bitcoin (known as Bitcoin Core) is written in cross-platform C++ and is available on all major operating systems like Windows, macOS and various flavours of Linux \cite{bitcoinDownload}. Since we had to make changes to the Core code we used the freely available source code of version 0.16 \cite{bitcoinSource}. The code uses GNU Build System \cite{gnuBuild} to automate the build process. We now describe the process of compiling Bitcoin Core. 
@@ -91,6 +96,7 @@ $ make -j4
     \label{code-btc-compile}
 \end{listing}
 
+\newpage
 To speed up the compilation process we pass the following flags to \textit{GNU Configure}:
 
 \begin{itemize}
@@ -102,12 +108,14 @@ To speed up the compilation process we pass the following flags to \textit{GNU C
 
 %----------------------------------------------------------------------------------------
 
-\newpage
 \section{Anchors with Bitcoin} \label{impl-anchors}
 
 We decided to implement Anchors in Bitcoin as it is the most widely used Proof-of-Work Blockchain. We used the stable version (v0.16 released on 26-02-2018) of the reference Bitcoin implementation (also called "Bitcoin Core") that was available to us before we started working on this project. For reference, the latest stable release of Bitcoin is v0.18 and was released on 18-05-2019. 
 
-As described in section \fixme{Add reference to correct section here.} \textit{Bitcoin Core} exposes a Remote Procedure Call (RPC) based API that other clients can use to control a Bitcoin node's behaviour. We implement Anchor support in Bitcoin by adding two new RPCs: \textbf{submitanchor} \& \textbf{generateanchor}. We now explain the working of these RPCs.
+In our implementation, an anchor is identical to a block excluding all transactions from its body except the coinbase i.e. anchors contain the block header and a coinbase transaction to identify and reward its creator. 
+% Anchors contain PoW which ensures that, like blocks, anchors also contribute weight to the chain they belong to. 
+
+As described in section \ref{btc-interfaces} \textit{Bitcoin Core} exposes a Remote Procedure Call (RPC) based API that other clients can use to control a Bitcoin node's behaviour. We implement Anchor support in Bitcoin by adding two new RPCs: \textbf{submitanchor} \& \textbf{generateanchor}. We now explain the working of these RPCs.
 
 %----------------------------------------------------------------------------------------
 
@@ -209,7 +217,7 @@ In a real-world implementation this would also have to be added so that changes 
 \newpage
 \paragraph{Updating weight of the chain:} 
 
-\info{Each node computes the weight with information it has locally; nChainWork}
+% \info{Each node computes the weight with information it has locally; nChainWork}
 
 An anchor updates the weight of the block that it points to and of all its descendants.
 This is done by performing a Breadth-first-search originating from the parent block and continuing down the tree.
@@ -241,7 +249,7 @@ anchor generation is ten times easier than block generation, so ten anchors are 
 
 \subsubsection{Brodcasting an Anchor to the network}
 
-The RPC call to submit an anchor happens on the TCP interface of Bitcoin Core which uses JSON as its data representation format. As explained in Section \fixme{ref} the Bitcoin Protocol uses a separate interface to exchange messages between the network. 
+The RPC call to submit an anchor happens on the TCP interface of Bitcoin Core which uses JSON as its data representation format. As explained in Section \ref{btc-interfaces} the Bitcoin Protocol uses a separate interface to exchange messages between the network. 
 We add a new message type that uses the same Bitcoin Protocol to send Anchor messages. 
 See the source file \textit{src/protocol.cpp} \& \textit{src/protocol.h} for the relevant code.
 
@@ -259,7 +267,7 @@ See the source file \textit{src/net\_processing.cpp} \& \textit{src/validationin
 
 \subsection{generateanchor} \label{impl-generateanchor}
 
-The \textit{generateanchor} RPC is modelled around the already existing \textit{generate} RPC (which is used to generate a block). 
+Sending a serialized Block as an argument to the \textit{submitanchor} RPC requires more bandwidth than is really necessary. To avoid wasting bandwidth, we created the the \textit{generateanchor} RPC, which is modelled around the already existing \textit{generate} RPC (which is used to generate a block). 
+
 While the \textit{submitanchor} RPC receives an anchor's representation as an argument, the \textit{generateanchor} RPC takes no arguments. When it is called, a new anchor is generated by the Bitcoin node itself, and is processed in the same way as explained in section \ref{impl-submitanchor}.
 
-We added this RPC because \fixme{continue this}

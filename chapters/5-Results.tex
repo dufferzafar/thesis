@@ -3,57 +3,88 @@
 % Make all sections in this chapter to be smaller
 \titleformat*{\section}{\small\bfseries}
 
-We conducted all experiments in 4 configurations, controlled by the \\ \textit{anchorsperblock} parameter, so a system without anchors (a = 0), and systems with anchor frequencies per block a = 2, 5 and 10. 
-Each configuration was run 15 times for one hour, with block inter-arrival time fixed to be 30 seconds. So the expected number of blocks in each run were about 120 (60 minutes / 30 seconds).
+We conducted all experiments in 4 separate configurations, controlled by the \textit{anchorsperblock} parameter (or \textit{a}):
+
+A Bitcoin system with anchor frequencies per block $a$ = 2, 5 \& 10 and 
+to compare the results with unmodified Bitcoin which has no anchors present ($a = 0$).
+
+Each configuration was run 15 times for 60 minutes, with block inter-arrival time fixed to be 30 seconds. 
+The expected number of blocks in each run therefore were 120 (60 minutes / 30 seconds).
 
 \section{Propagation times of Anchors vs propagation time of Blocks (with Anchors)} \label{res-prop-1}
-For the anchor structure implemented, we see that all anchors have a fixed size of 264 Bytes. The median block size observed across all runs of our experiments was 
-932KB. 
-Comparing average propagation times of Blocks vs Anchors, we observed that anchor propagation times are at least 
-5 times faster than blocks. Our hypothesis that an anchor will propagate much faster than a block is proven here. Figure \ref{fig-prop-times} plots the observed results. Hence anchors do work as a signaling scheme to give early insights to miners about the hashing power division in the network.
+
+Due to the absence of any transactions (apart from a Coinbase) in the anchor structure, all anchors have a constant size of 264 Bytes. 
+The median block size, on the other hand, across all experimental runs, was observed to be 986KB. 
+Figure \ref{fig-prop-times} plots the observed propagation times. 
+When we compare mean propagation times of Blocks and Anchors, we notice that Anchors propagate around 5 times faster than Blocks.
+This aligns with the theoretical result, since Anchors are much smaller than Blocks and hence have a much smaller transmission time. 
+This shows the effectiveness of Anchors as a signalling mechanism. 
+Quick propagation times by Anchors ensure that all nodes have more recent information about the hashing power division in the network when compared to Blocks alone.
 
 \begin{figure}[!htb]
     \centering
     \includegraphics[width=0.7\textwidth]{"Propagation Times".pdf}
-    \caption{Mean propagation times of anchors, and blocks with and without the presence of anchors }
+    \caption[Mean propagation times of Anchors and Blocks]{
+        Mean propagation times of Anchors and Blocks with and without the presence of Anchors.
+    }
     \label{fig-prop-times}
 \end{figure}
 
 \section{Propagation times of Blocks with and without Anchors} \label{res-prop-2}
 
-Figure \ref{fig-prop-times} plots the propagation time of blocks with and without anchors. We observe that these two are comparable, with propagation times with anchors increasing only 
+Figure \ref{fig-prop-times} also plots the propagation time of blocks with and without the presence of anchors in the system. 
+We observe that the inclusion of anchors does not negatively affect the propagation times of blocks, with propagation times including anchors in the system increasing only
 0, 
-5 and 
-17 percent for $a$ = 2, 5 and 10. We can thus say that anchors may work with the system without creating bandwidth or latency overheads. 
+11 and 
+21 percent for $a$ = 2, 5 and 10 respectively. 
+Hence we can safely conclude that anchors do not create significant bandwidth or latency penalties in the system. 
 
 \section{Frequency of Anchors per Block vs Resolution time of forks (RTF)} \label{res-frt}
 
-We observe that anchors reduce the mean fork resolution time by 70, 82 and 96 percent, with a = 2, 5 and 10 respectively. 
-Figure \ref{fig-forks-rtf} shows the results of average resolution time of forks we saw in our network while varying anchor frequency (a) to 2, 5, and 10 when compared to the Bitcoin network without anchors. 
+Figure \ref{fig-forks-rtf} plots the average resolution time of forks (RTF) as observed in the network while varying anchor frequency (a) against a Bitcoin network without anchors. 
+On comparing fork resolution times with and without the presence of anchors in the system, we observe that the Anchors reduce the mean fork resolution times by 57, 81 and 88 percent, with a = 2, 5 and 10 respectively. 
+This shows how effective Anchors can be in resolving forks quicker.
 
 \begin{figure}[!htb]
     \centering
     \includegraphics[width=0.7\textwidth]{"Fork Resolution Times".pdf}
-    \caption{Mean Resolution Time of Forks (RTF) for different values of a along with 95\% confidence intervals}
+    \caption[Mean Resolution Time of Forks (RTF)]{
+        Mean Resolution Time of Forks (RTF) for different frequencies of anchors. \\
+        \footnotesize
+        95\% confidence intervals are drawn around the mean values.
+    }
     \label{fig-forks-rtf}
 \end{figure}
 
 \section{Unition of mining power in forks in the presence of Anchors} \label{res-unition}
 
-Forks are resolved at each miner, based on the chain he observes locally. 
-We found that, for every fork, the branch chosen by the miner to resolve it was the same across the network. Thus anchors succeed in reuniting mining power (divided across the branches of a fork) to the same chain.
+Due to the decentralised nature of Bitcoin, each miner maintains their own copy of the chain locally, so forks occur and are resolved at each node.
+Analyzing the logs at each node, we observed that on an average (mean) - 94.7\% of the network resolved a fork to the same branch when Anchors were present. 
+Thus, we can see how Anchors are successful in reuniting mining power (divided across the branches of a fork) to the same chain.
 
 \section{Frequency of Anchors per Block vs Number of forks prevented} \label{res-fork-prev}
 
-For this experiment, we calculate the number of forks prevented as the number of miners on which the fork is resolved before occurring due to anchors. 
-Figure \ref{fig-forks-prevented} shows the average number of forks prevented when varying $a$ between 2, 5 and 10, and comparing it to a system without anchors. We observe that the inclusion of anchors prevents forks from occurring.
+In this experiment, we calculate the cumulative number of forks prevented across miners due to the presence of Anchors in the system and compare it to a system without Anchors. 
+Upon varying $a$ between 2 ,5 and 10, and comparing it to a reference system (without Anchors), we observe an increasing number of forks prevented as $a$ increases. Figure \ref{fig-forks-prevented} plots the actual values.
 
 \begin{figure}[!htb]
     \centering
     \includegraphics[width=0.7\textwidth]{"Forks Prevented".pdf}
-    \caption{Mean number of forks prevented in a blockchain of length 50 and a network of 114 miners, with 5\% confidence intervals}
+    \caption[Mean number of forks prevented]{
+        Mean number of forks prevented in a blockchain of mean length 120 and a network of 114 miners.\\
+        \footnotesize
+        95\% confidence intervals are drawn around the mean values.
+    }
     \label{fig-forks-prevented}
 \end{figure}
+
+\section{Effect of network topology} \label{res-topo-effect}
+
+As mentioned in Section \ref{exp-setup-topology}, we used a simple topology for the testbed network that we conducted all our experiments on, where each node was connected to five other randomly chosen ones.
+As suggested by prior work \cite{coinscope}, the main Bitcoin network has been observed to have a topology where the degree of nodes follow a power-law distribution with majority of the nodes having a degree between 8 and 12.
+We tried to use similar degree values for our network as well (varying them between 4-8),
+but we found effectively no change in our results when we switched to a more Bitcoin like topology. 
+This could perhaps be due to the fact that we have a considerably smaller network (of only 114 nodes) when compared to the main Bitcoin network, which has more than 6000 full nodes running at a time and when switching to a random node degree the diameter of our network didn't change.
 
 % Make sections large again!
 \titleformat*{\section}{\LARGE\bfseries}
