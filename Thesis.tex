@@ -1,6 +1,6 @@
 \documentclass[
 12pt, % The default document font size, options: 10pt, 11pt, 12pt
-% oneside, % Two side (alternating margins) for binding by default, uncomment to switch to one side
+oneside, % Two side (alternating margins) for binding by default, uncomment to switch to one side
 english, 
 onehalfspacing, % Single line spacing, alternatives: onehalfspacing or doublespacing
 % draft, % Uncomment to enable draft mode (no pictures, no links, overfull hboxes indicated)
@@ -63,6 +63,7 @@ headsepline, % Uncomment to get a line under the header
 % \binoppenalty=3000
 % \relpenalty=3000
 
+% ???
 \usepackage{fixltx2e}
 
 %----------------------------------------------------------------------------------------
@@ -165,7 +166,7 @@ It also results in systems with low performance as the confirmation times increa
 In this thesis, we present a new signalling mechanism (called Anchors) which aid in improving the security and performance of PoW blockchains, while adding minimal overhead to the system.
 We implement Anchors in the reference implementation of Bitcoin (the most widely used PoW Blockchain) as a proof of concept.
 We also create a testbed that allows running Bitcoin experiments and use it to evaluate our implementation of Anchors on a network of 114 Bitcoin nodes. 
-Comparing the results with unmodified Bitcoin we find that anchors propagate much faster than blocks, aiding in quicker fork resolution times (and even preveing some forks from occurring), without adversely impacting block propagation times.
+Comparing the results with unmodified Bitcoin we find that anchors propagate much faster than blocks, aiding in quicker fork resolution times (and even preventing some forks from occurring), without adversely impacting block propagation times.
 
 \end{abstract}
 

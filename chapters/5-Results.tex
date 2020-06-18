@@ -14,16 +14,16 @@ The expected number of blocks in each run therefore were 120 (60 minutes / 30 se
 \section{Propagation times of Anchors vs propagation time of Blocks (with Anchors)} \label{res-prop-1}
 
 Due to the absence of any transactions (apart from a Coinbase) in the anchor structure, all anchors have a constant size of 264 Bytes. 
-The median block size, on the other hand, across all experimental runs, was observed to be 986KB. 
+The mean block size, on the other hand, across all experimental runs, was observed to be 992KB. 
 Figure \ref{fig-prop-times} plots the observed propagation times. 
 When we compare mean propagation times of Blocks and Anchors, we notice that Anchors propagate around 5 times faster than Blocks.
-This aligns with the theoretical result, since Anchors are much smaller than Blocks and hence have a much smaller transmission time. 
+This aligns our hypothesis that Anchors are much smaller than Blocks and should have a much smaller propagation time. 
 This shows the effectiveness of Anchors as a signalling mechanism. 
 Quick propagation times by Anchors ensure that all nodes have more recent information about the hashing power division in the network when compared to Blocks alone.
 
 \begin{figure}[!htb]
     \centering
-    \includegraphics[width=0.7\textwidth]{"Propagation Times".pdf}
+    \includegraphics[width=0.7\textwidth]{"Propagation Times (colored)".pdf}
     \caption[Mean propagation times of Anchors and Blocks]{
         Mean propagation times of Anchors and Blocks with and without the presence of Anchors.
     }
@@ -64,14 +64,16 @@ Thus, we can see how Anchors are successful in reuniting mining power (divided a
 
 \section{Frequency of Anchors per Block vs Number of forks prevented} \label{res-fork-prev}
 
-In this experiment, we calculate the cumulative number of forks prevented across miners due to the presence of Anchors in the system and compare it to a system without Anchors. 
-Upon varying $a$ between 2 ,5 and 10, and comparing it to a reference system (without Anchors), we observe an increasing number of forks prevented as $a$ increases. Figure \ref{fig-forks-prevented} plots the actual values.
+In this experiment, we calculate the percentage of nodes in the network where a fork was prevented from occurring.
+Figure \ref{fig-forks-prevented} plots these results.
+No forks were prevented when Anchors are not present, and though the absolute values are not high, we still see that as $a$ increases the percentage of network where a fork is prevented also increases.
+% So, the presence of anchors prevents some forks from even occurring.
 
 \begin{figure}[!htb]
     \centering
     \includegraphics[width=0.7\textwidth]{"Forks Prevented".pdf}
-    \caption[Mean number of forks prevented]{
-        Mean number of forks prevented in a blockchain of mean length 120 and a network of 114 miners.\\
+    \caption[Percentage of network where forks are prevented]{
+        Percentage of network where forks are prevented.\\
         \footnotesize
         95\% confidence intervals are drawn around the mean values.
     }

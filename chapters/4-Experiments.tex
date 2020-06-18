@@ -33,7 +33,7 @@ The structure of Bitcoin's topology is complicated, and is intentionally hidden 
 There are two main RPCs that provide network related information \textit{getnetworkinfo} and \textit{getpeerinfo}, but they do not reveal the immediate neighbors, but do provide a superset of nodes that they have discovered. 
 The latency among the nodes is also unknown. 
 
-There has been some previous research that shed light on some of the details of Bitcoin's topology \cite{coinscope}, like the fact that degrees of nodes can be approximated by a power-law distribution. The approach used by this work was patched in this version. 
+There has been some previous research that shed light on some of the details of Bitcoin's topology \cite{coinscope}, like the fact that degrees of nodes can be approximated by a power-law distribution. The approach used by this work was patched in version 0.10.1 of Bitcoin (released in April 2015) \cite{bitcoinTxnBugFix}.
 Though there have been other approaches \cite{bitcoinTopology2018} that tried to reveal more information about the topology, we are not aware of any detailed work that offers significant insight into the Bitcoin main network.
 
 Similar to other past work \cite{bitcoinNG} that emulated Bitcoin in experimental settings, we construct a network where each node is connected to 5 other nodes chosen at random.
@@ -143,7 +143,7 @@ Each Bitcoin node logs the time when a Block or an Anchor is generated and when 
 For each Block (or Anchor) we compute the difference between the time it was generated a node and when it was received at all other nodes. 
 The maximum of these values is the total time taken by the Block (or Anchor) to propagate throughout the network.
 We observed that taking the maximum value results in outliers, as some nodes always lag behind the others.
-To prevent the actual results being lost in outliers, we took 95 percentile values for propagation times.
+To prevent the actual results from being lost in outliers, we took 95 percentile values for propagation times.
 
 % Propagation time of a message is the difference between the time of its broadcast at the source node and the time of its arrival at the destination. To remove extraneous outliers, we calculate the 95th percentile of propagation times.
 
@@ -203,4 +203,4 @@ With the introduction of Anchors, there can be scenarios where a fork is prevent
 Figure \ref{diag-fork-prevention} depicts such a situtation, where A fork would've been caused by Block B\textsubscript{2} but since Anchor A\textsubscript{1} arrives before B\textsubscript{2} the fork never occurs as the chain having A\textsubscript{1} is still heavier than the other one.
 % - at time T\textsubscript{0} + 6 with the arrival of Anchor A\textsubscript{1}.
 
-To compute results, we count for each fork that occurs, the number of nodes that it gets prevented on.
+To compute results, we count for each unique fork that occurs, the number of nodes that it gets prevented on, and then average it over the multiple runs of experiments we perform.
